@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "Project": {
+      "title": "Project",
+      "description": "Represents a project in the company portfolio.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Project title"
+        },
+        "category": {
+          "type": "string",
+          "description": "Project category (e.g., Industrial, Residential)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the work done"
+        },
+        "image": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL of the project image"
+        },
+        "client": {
+          "type": "string",
+          "description": "Client name"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the project was published"
+        }
+      },
+      "required": ["title", "category", "description", "image", "client", "createdAt"]
+    },
+    "Settings": {
+      "title": "Settings",
+      "description": "Company wide settings like contact information.",
+      "type": "object",
+      "properties": {
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "address": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["phone", "email", "address"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Information submitted via contact form.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "company": { "type": "string" },
+        "email": { "type": "string" },
+        "service": { "type": "string" },
+        "details": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "details", "createdAt"]
+    }
+  },
+  "firestore": {
+    "projects": {
+      "schema": "Project",
+      "description": "Collection of portfolio projects."
+    },
+    "settings": {
+      "schema": "Settings",
+      "description": "Global application settings."
+    },
+    "messages": {
+      "schema": "Message",
+      "description": "Customer contact messages."
+    }
+  }
+}
