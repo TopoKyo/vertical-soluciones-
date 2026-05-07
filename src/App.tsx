@@ -9,6 +9,7 @@ import { doc, getDocFromServer } from 'firebase/firestore';
 import { db } from "./lib/firebase";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
+import FloatingActions from "./components/FloatingActions";
 import Home from "./pages/Home";
 import Portfolio from "./pages/Portfolio";
 import AdminLogin from "./pages/AdminLogin";
@@ -59,6 +60,7 @@ export default function App() {
           </Routes>
         </main>
         <Footer />
+        <FloatingActions />
       </div>
     </Router>
   );

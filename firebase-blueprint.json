@@ -36,12 +36,13 @@
     },
     "Settings": {
       "title": "Settings",
-      "description": "Company wide settings like contact information.",
+      "description": "Company wide settings like contact information and AI behavior.",
       "type": "object",
       "properties": {
         "phone": { "type": "string" },
         "email": { "type": "string" },
         "address": { "type": "string" },
+        "aiPrompt": { "type": "string", "description": "Knowledge base and personality for the AI Chatbot." },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["phone", "email", "address"]
