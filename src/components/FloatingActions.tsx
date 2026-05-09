@@ -43,7 +43,7 @@ export default function FloatingActions() {
               animate={{ scale: 1, rotate: 0 }}
               exit={{ scale: 0, rotate: 45 }}
               onClick={() => setIsChatOpen(true)}
-              className="w-14 h-14 bg-orange-600 hover:bg-orange-700 text-white rounded-full shadow-lg shadow-orange-900/40 flex items-center justify-center transition-transform hover:scale-110 active:scale-95 group"
+              className="w-14 h-14 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg shadow-red-900/40 flex items-center justify-center transition-transform hover:scale-110 active:scale-95 group"
             >
               <Bot className="w-6 h-6 group-hover:animate-bounce" />
             </motion.button>

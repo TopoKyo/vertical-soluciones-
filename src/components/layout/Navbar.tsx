@@ -31,11 +31,11 @@ export default function Navbar() {
       <nav id="navbar" className={`fixed w-full z-50 transition-all duration-300 ${scrolled || location.pathname !== "/" ? "bg-slate-950/90 backdrop-blur-md py-4 shadow-lg" : "bg-transparent py-6"}`}>
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-orange-600 flex items-center justify-center rounded-lg shadow-lg shadow-orange-900/20">
+            <div className="w-10 h-10 bg-red-600 flex items-center justify-center rounded-lg shadow-lg shadow-red-900/20">
               <Mountain className="text-white w-6 h-6" />
             </div>
             <span className="text-xl font-bold tracking-tighter uppercase italic">
-              Vertical <span className="text-orange-500">Soluciones</span>
+              Vertical <span className="text-red-500">Soluciones</span>
             </span>
           </Link>
 
@@ -43,16 +43,16 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
             {navItems.map((item) => (
               item.path.startsWith("/#") ? (
-                <a key={item.name} href={item.path} className="hover:text-orange-500 transition-colors uppercase">
+                <a key={item.name} href={item.path} className="hover:text-red-500 transition-colors uppercase">
                   {item.name}
                 </a>
               ) : (
-                <Link key={item.name} to={item.path} className={`hover:text-orange-500 transition-colors uppercase ${location.pathname === item.path ? "text-orange-500" : ""}`}>
+                <Link key={item.name} to={item.path} className={`hover:text-red-500 transition-colors uppercase ${location.pathname === item.path ? "text-red-500" : ""}`}>
                   {item.name}
                 </Link>
               )
             ))}
-            <a href="/#contacto" className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-full transition-all shadow-lg shadow-orange-900/20 active:scale-95">
+            <a href="/#contacto" className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full transition-all shadow-lg shadow-red-900/20 active:scale-95">
               CONTACTO
             </a>
           </div>
@@ -80,7 +80,7 @@ export default function Navbar() {
                     key={item.name} 
                     href={item.path} 
                     onClick={() => setIsMenuOpen(false)}
-                    className="hover:text-orange-500 transition-colors"
+                    className="hover:text-red-500 transition-colors"
                   >
                     {item.name}
                   </a>
@@ -89,13 +89,13 @@ export default function Navbar() {
                     key={item.name} 
                     to={item.path} 
                     onClick={() => setIsMenuOpen(false)}
-                    className={`hover:text-orange-500 transition-colors ${location.pathname === item.path ? "text-orange-500" : ""}`}
+                    className={`hover:text-red-500 transition-colors ${location.pathname === item.path ? "text-red-500" : ""}`}
                   >
                     {item.name}
                   </Link>
                 )
               ))}
-              <a href="/#contacto" onClick={() => setIsMenuOpen(false)} className="hover:text-orange-500 transition-colors">
+              <a href="/#contacto" onClick={() => setIsMenuOpen(false)} className="hover:text-red-500 transition-colors">
                 CONTACTO
               </a>
             </div>

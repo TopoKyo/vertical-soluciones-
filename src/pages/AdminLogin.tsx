@@ -40,13 +40,13 @@ export default function AdminLogin() {
         animate={{ opacity: 1, scale: 1 }}
         className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden"
       >
-        <div className="absolute top-0 right-0 w-32 h-32 bg-orange-600/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
         
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-600 rounded-2xl mb-4 shadow-lg shadow-orange-900/20">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-red-600 rounded-2xl mb-4 shadow-lg shadow-red-900/20">
             <Mountain className="text-white w-8 h-8" />
           </div>
-          <h1 className="text-2xl font-black uppercase italic tracking-tighter">Acceso <span className="text-orange-500">Admin</span></h1>
+          <h1 className="text-2xl font-black uppercase italic tracking-tighter">Acceso <span className="text-red-500">Admin</span></h1>
           <p className="text-slate-500 text-sm mt-2 font-bold uppercase tracking-widest">Vertical Soluciones</p>
         </div>
 

@@ -73,9 +73,9 @@ export default function Portfolio() {
     <div className="pt-24 min-h-screen bg-slate-950 text-slate-50">
       <section className="py-20 border-b border-slate-900">
         <div className="max-w-7xl mx-auto px-6 text-center md:text-left">
-          <span className="text-orange-500 font-bold text-xs tracking-[0.4em] uppercase mb-4 block">Experiencia Comprobada</span>
+          <span className="text-red-500 font-bold text-xs tracking-[0.4em] uppercase mb-4 block">Experiencia Comprobada</span>
           <h1 className="text-5xl md:text-7xl font-black italic uppercase tracking-tighter mb-6 leading-none">
-            Nuestro <span className="text-orange-500">Portafolio</span>
+            Nuestro <span className="text-red-500">Portafolio</span>
           </h1>
           <p className="text-slate-400 text-lg leading-relaxed max-w-2xl mx-auto md:mx-0">
             Proyectos ejecutados bajo los más altos estándares industriales en todo Chile.
@@ -87,7 +87,7 @@ export default function Portfolio() {
         <div className="max-w-7xl mx-auto px-6">
           {loading ? (
             <div className="flex items-center justify-center py-20">
-              <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
+              <Loader2 className="w-10 h-10 text-red-500 animate-spin" />
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -98,12 +98,12 @@ export default function Portfolio() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1 }}
                   viewport={{ once: true }}
-                  className="group flex flex-col bg-slate-900 border border-slate-800 rounded-[2rem] overflow-hidden hover:border-orange-500/30 transition-all"
+                  className="group flex flex-col bg-slate-900 border border-slate-800 rounded-[2rem] overflow-hidden hover:border-red-500/30 transition-all"
                 >
                   <div className="relative h-64 overflow-hidden">
                     <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
                     <div className="absolute top-4 left-4">
-                      <span className="px-4 py-1 bg-orange-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full">{project.category}</span>
+                      <span className="px-4 py-1 bg-red-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full">{project.category}</span>
                     </div>
                   </div>
                   <div className="p-8 flex-grow flex flex-col">
@@ -111,7 +111,7 @@ export default function Portfolio() {
                     <p className="text-slate-400 text-sm mb-6 flex-grow">{project.description}</p>
                     <div className="pt-6 border-t border-slate-800 flex justify-between items-center text-xs">
                       <span className="text-slate-500 uppercase tracking-widest font-bold">Cliente: {project.client}</span>
-                      <ChevronRight className="w-4 h-4 text-orange-500 group-hover:translate-x-1 transition-transform" />
+                      <ChevronRight className="w-4 h-4 text-red-500 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
                 </motion.div>
@@ -125,16 +125,16 @@ export default function Portfolio() {
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
             <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter mb-8 leading-tight">
-              Capacidad para <span className="text-orange-500">Desafíos</span>
+              Capacidad para <span className="text-red-500">Desafíos</span>
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                <div className="p-6 bg-slate-900 border border-slate-800 rounded-3xl">
-                  <Shield className="w-8 h-8 text-orange-500 mb-4" />
+                  <Shield className="w-8 h-8 text-red-500 mb-4" />
                   <div className="text-xl font-black italic uppercase mb-1">ANSI / IRATA</div>
                   <div className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Normativas Globales</div>
                </div>
                <div className="p-6 bg-slate-900 border border-slate-800 rounded-3xl">
-                  <HardHat className="w-8 h-8 text-orange-500 mb-4" />
+                  <HardHat className="w-8 h-8 text-red-500 mb-4" />
                   <div className="text-xl font-black italic uppercase mb-1">+500 Proyectos</div>
                   <div className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Finalizados con Éxito</div>
                </div>
@@ -144,7 +144,7 @@ export default function Portfolio() {
              <div className="h-48 rounded-3xl bg-slate-800 relative overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80&w=400" className="w-full h-full object-cover opacity-50" alt="Work" referrerPolicy="no-referrer" />
              </div>
-             <div className="h-48 rounded-3xl bg-orange-600 flex flex-col items-center justify-center p-6 text-center">
+             <div className="h-48 rounded-3xl bg-red-600 flex flex-col items-center justify-center p-6 text-center">
                 <Factory className="w-8 h-8 mb-2" />
                 <span className="text-sm font-black uppercase italic">Industria 4.0</span>
              </div>

@@ -197,29 +197,29 @@ export default function AdminDashboard() {
       <aside className="w-64 border-r border-slate-800 bg-slate-900 hidden lg:flex flex-col">
         <div className="p-8 border-b border-slate-800">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center font-black italic text-sm">V</div>
-            <span className="font-black uppercase italic text-sm tracking-tighter">Vertical <span className="text-orange-500">Panel</span></span>
+            <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center font-black italic text-sm">V</div>
+            <span className="font-black uppercase italic text-sm tracking-tighter">Vertical <span className="text-red-500">Panel</span></span>
           </div>
         </div>
         
         <nav className="flex-1 p-6 space-y-2">
           <button 
             onClick={() => setActiveTab("projects")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "projects" ? "bg-orange-600/10 text-orange-500" : "text-slate-500 hover:text-white"}`}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "projects" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"}`}
           >
             <LayoutDashboard className="w-4 h-4" />
             Portafolio
           </button>
           <button 
             onClick={() => setActiveTab("messages")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "messages" ? "bg-orange-600/10 text-orange-500" : "text-slate-500 hover:text-white"}`}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "messages" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"}`}
           >
             <MessageSquare className="w-4 h-4" />
             Mensajes
           </button>
           <button 
             onClick={() => setActiveTab("settings")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "settings" ? "bg-orange-600/10 text-orange-500" : "text-slate-500 hover:text-white"}`}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "settings" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"}`}
           >
             <SettingsIcon className="w-4 h-4" />
             Configuración
@@ -242,9 +242,9 @@ export default function AdminDashboard() {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
           <div>
             <h1 className="text-3xl font-black uppercase italic tracking-tighter mb-2">
-              {activeTab === "projects" && <>Gestión de <span className="text-orange-500">Portafolio</span></>}
-              {activeTab === "messages" && <>Bandeja de <span className="text-orange-500">Mensajes</span></>}
-              {activeTab === "settings" && <>Ajustes de <span className="text-orange-500">Contacto</span></>}
+              {activeTab === "projects" && <>Gestión de <span className="text-red-500">Portafolio</span></>}
+              {activeTab === "messages" && <>Bandeja de <span className="text-red-500">Mensajes</span></>}
+              {activeTab === "settings" && <>Ajustes de <span className="text-red-500">Contacto</span></>}
             </h1>
             <p className="text-slate-500 text-sm font-bold uppercase tracking-widest">
               {activeTab === "projects" && "Añade o elimina proyectos realizados por la empresa."}
@@ -256,7 +256,7 @@ export default function AdminDashboard() {
           {activeTab === "projects" && (
             <button 
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-6 py-4 rounded-2xl font-black uppercase tracking-widest italic text-sm transition-all hover:scale-105 shadow-xl shadow-orange-900/20"
+              className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-4 rounded-2xl font-black uppercase tracking-widest italic text-sm transition-all hover:scale-105 shadow-xl shadow-red-900/20"
             >
               <PlusCircle className="w-5 h-5" />
               Nuevo Proyecto
@@ -266,7 +266,7 @@ export default function AdminDashboard() {
 
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
+            <Loader2 className="w-10 h-10 text-red-500 animate-spin" />
           </div>
         ) : (
           <div className="space-y-6">
@@ -287,7 +287,7 @@ export default function AdminDashboard() {
                     <div className="flex-1">
                       <div className="flex justify-between items-start mb-4">
                         <div>
-                          <span className="text-[10px] uppercase tracking-[0.2em] font-black text-orange-500 mb-2 block">{project.category}</span>
+                          <span className="text-[10px] uppercase tracking-[0.2em] font-black text-red-500 mb-2 block">{project.category}</span>
                           <h3 className="text-xl font-black uppercase italic tracking-tighter">{project.title}</h3>
                         </div>
                         <button 
@@ -328,7 +328,7 @@ export default function AdminDashboard() {
                   >
                     <div className="flex flex-col md:flex-row justify-between gap-6 mb-6">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-orange-600/10 text-orange-500 rounded-2xl flex items-center justify-center flex-shrink-0">
+                        <div className="w-12 h-12 bg-red-600/10 text-red-500 rounded-2xl flex items-center justify-center flex-shrink-0">
                           <User className="w-6 h-6" />
                         </div>
                         <div>
@@ -341,7 +341,7 @@ export default function AdminDashboard() {
                         </div>
                       </div>
                       <div className="flex items-center gap-4">
-                        <span className="px-4 py-1.5 bg-orange-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full">{message.service}</span>
+                        <span className="px-4 py-1.5 bg-red-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full">{message.service}</span>
                         <button 
                           onClick={() => handleDeleteMessage(message.id)}
                           className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 transition-colors hover:text-white"
@@ -384,7 +384,7 @@ export default function AdminDashboard() {
                         required
                         value={settings.phone}
                         onChange={(e) => setSettings({...settings, phone: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-orange-500 transition-colors text-white"
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
                         placeholder="+56 9 1234 5678"
                       />
                     </div>
@@ -399,7 +399,7 @@ export default function AdminDashboard() {
                         required
                         value={settings.email}
                         onChange={(e) => setSettings({...settings, email: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-orange-500 transition-colors text-white"
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
                         placeholder="contacto@empresa.cl"
                       />
                     </div>
@@ -414,7 +414,7 @@ export default function AdminDashboard() {
                         required
                         value={settings.address}
                         onChange={(e) => setSettings({...settings, address: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-orange-500 transition-colors text-white"
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
                         placeholder="Calle, Ciudad, Región"
                       />
                     </div>
@@ -426,7 +426,7 @@ export default function AdminDashboard() {
                       rows={6}
                       value={settings.aiPrompt}
                       onChange={(e) => setSettings({...settings, aiPrompt: e.target.value})}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-orange-500 transition-colors text-white resize-none"
+                      className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white resize-none"
                       placeholder="Escribe aquí la información sobre la empresa, servicios, precios o lo que quieras que el chatbot sepa para responder..."
                     />
                     <p className="text-[10px] text-slate-600 uppercase tracking-widest font-bold ml-2">Usa este espacio para dar contexto al asistente virtual.</p>
@@ -435,7 +435,7 @@ export default function AdminDashboard() {
                   <button
                     type="submit"
                     disabled={isSavingSettings}
-                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black uppercase tracking-[0.3em] py-5 rounded-2xl shadow-xl shadow-orange-900/20 transition-all hover:scale-[1.02] active:scale-[0.98] italic text-sm flex justify-center items-center gap-2 disabled:opacity-50"
+                    className="w-full bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-[0.3em] py-5 rounded-2xl shadow-xl shadow-red-900/20 transition-all hover:scale-[1.02] active:scale-[0.98] italic text-sm flex justify-center items-center gap-2 disabled:opacity-50"
                   >
                     {isSavingSettings ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Save className="w-4 h-4" /> Guardar Cambios</>}
                   </button>
@@ -472,7 +472,7 @@ export default function AdminDashboard() {
               </button>
 
               <div className="mb-10">
-                <h2 className="text-2xl font-black uppercase italic tracking-tighter">Añadir <span className="text-orange-500">Proyecto</span></h2>
+                <h2 className="text-2xl font-black uppercase italic tracking-tighter">Añadir <span className="text-red-500">Proyecto</span></h2>
                 <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1">Completa los campos para publicar.</p>
               </div>
 
@@ -487,7 +487,7 @@ export default function AdminDashboard() {
                         required
                         value={formData.title}
                         onChange={(e) => setFormData({...formData, title: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-orange-500 transition-colors text-white"
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
                         placeholder="Ej. Pintura de Fachada Edificio X"
                       />
                     </div>
@@ -502,7 +502,7 @@ export default function AdminDashboard() {
                         required
                         value={formData.category}
                         onChange={(e) => setFormData({...formData, category: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-orange-500 transition-colors text-white"
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
                         placeholder="Ej. Industrial"
                       />
                     </div>
@@ -517,7 +517,7 @@ export default function AdminDashboard() {
                         required
                         value={formData.image}
                         onChange={(e) => setFormData({...formData, image: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-orange-500 transition-colors text-white"
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
                         placeholder="https://..."
                       />
                     </div>
@@ -532,7 +532,7 @@ export default function AdminDashboard() {
                         required
                         value={formData.client}
                         onChange={(e) => setFormData({...formData, client: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-orange-500 transition-colors text-white"
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
                         placeholder="Nombre del cliente"
                       />
                     </div>
@@ -545,7 +545,7 @@ export default function AdminDashboard() {
                     required
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-2xl p-6 text-sm focus:outline-none focus:border-orange-500 transition-colors text-white min-h-[150px] resize-none"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-2xl p-6 text-sm focus:outline-none focus:border-red-500 transition-colors text-white min-h-[150px] resize-none"
                     placeholder="Describe los detalles del proyecto..."
                   />
                 </div>
@@ -553,7 +553,7 @@ export default function AdminDashboard() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black uppercase tracking-[0.3em] py-5 rounded-2xl shadow-xl shadow-orange-900/20 transition-all hover:scale-[1.02] active:scale-[0.98] italic text-sm flex justify-center items-center gap-2 disabled:opacity-50"
+                  className="w-full bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-[0.3em] py-5 rounded-2xl shadow-xl shadow-red-900/20 transition-all hover:scale-[1.02] active:scale-[0.98] italic text-sm flex justify-center items-center gap-2 disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <>

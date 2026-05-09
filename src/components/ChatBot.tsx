@@ -102,7 +102,7 @@ export default function ChatBot({ isOpen, onClose }: { isOpen: boolean; onClose:
           className="fixed bottom-24 right-6 w-[350px] md:w-[400px] h-[600px] bg-slate-900 border border-slate-800 rounded-[2rem] shadow-2xl z-50 flex flex-col overflow-hidden"
         >
           {/* Header */}
-          <div className="bg-orange-600 p-6 flex justify-between items-center shrink-0">
+          <div className="bg-red-600 p-6 flex justify-between items-center shrink-0">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
                 <Bot className="w-6 h-6 text-white" />
@@ -131,7 +131,7 @@ export default function ChatBot({ isOpen, onClose }: { isOpen: boolean; onClose:
               >
                 <div className={`max-w-[80%] p-4 rounded-2xl text-sm ${
                   m.role === "user" 
-                    ? "bg-orange-600 text-white rounded-tr-none" 
+                    ? "bg-red-600 text-white rounded-tr-none" 
                     : "bg-slate-800 text-slate-200 rounded-tl-none border border-slate-700"
                 }`}>
                   {m.text}
@@ -141,7 +141,7 @@ export default function ChatBot({ isOpen, onClose }: { isOpen: boolean; onClose:
             {isLoading && (
               <div className="flex justify-start">
                 <div className="bg-slate-800 border border-slate-700 p-4 rounded-2xl rounded-tl-none flex items-center gap-2">
-                  <Loader2 className="w-4 h-4 text-orange-500 animate-spin" />
+                  <Loader2 className="w-4 h-4 text-red-500 animate-spin" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Vertical AI está pensando...</span>
                 </div>
               </div>
@@ -174,18 +174,18 @@ export default function ChatBot({ isOpen, onClose }: { isOpen: boolean; onClose:
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSend()}
                 placeholder="Escribe tu pregunta aquí..."
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-6 pr-12 py-4 text-sm text-white focus:outline-none focus:border-orange-500 transition-colors"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-6 pr-12 py-4 text-sm text-white focus:outline-none focus:border-red-500 transition-colors"
               />
               <button 
                 onClick={() => handleSend()}
                 disabled={isLoading}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50"
               >
                 <Send className="w-4 h-4" />
               </button>
             </div>
             <div className="flex items-center justify-center gap-1.5 mt-4">
-              <Sparkles className="w-3 h-3 text-orange-500" />
+              <Sparkles className="w-3 h-3 text-red-500" />
               <span className="text-[8px] text-slate-600 uppercase font-black tracking-[0.2em]">Potenciado por Gemini AI</span>
             </div>
           </div>
