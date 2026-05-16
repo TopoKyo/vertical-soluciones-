@@ -99,9 +99,20 @@ export default function Footer() {
           <p className="text-[10px] text-slate-600 uppercase tracking-widest font-bold">
             © {new Date().getFullYear()} Vertical Soluciones SpA. Todos los derechos reservados.
           </p>
-          <p className="text-[10px] text-slate-600 uppercase tracking-widest font-bold">
-            Ingeniería de Acceso & Mantenimiento Técnico
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-[10px] text-slate-600 uppercase tracking-widest font-bold">
+              Ingeniería de Acceso & Mantenimiento Técnico
+            </p>
+            <span className="text-slate-800 text-[10px]">|</span>
+            <a 
+              href="https://kobit.cl" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-[10px] text-slate-600 uppercase tracking-widest font-bold hover:text-red-500 transition-colors"
+            >
+              Pagina creada por kobit.cl
+            </a>
+          </div>
         </div>
       </div>
     </footer>

@@ -21,7 +21,8 @@ import {
   Save,
   CheckCircle,
   Calendar,
-  Briefcase
+  Briefcase,
+  Pencil
 } from "lucide-react";
 import { db, auth } from "../lib/firebase";
 import { 
@@ -46,7 +47,12 @@ interface Project {
   category: string;
   description: string;
   image: string;
+  gallery?: string[];
+  serviceProvided?: string;
   client: string;
+  contractedBy?: string;
+  location?: string;
+  executionDate?: string;
   createdAt: any;
 }
 
@@ -66,6 +72,8 @@ export default function AdminDashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
@@ -84,8 +92,48 @@ export default function AdminDashboard() {
     category: "",
     description: "",
     image: "",
-    client: ""
+    gallery: [] as string[],
+    serviceProvided: "",
+    client: "",
+    contractedBy: "",
+    location: "",
+    executionDate: ""
   });
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({ ...prev, image: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleGalleryUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      fileArray.forEach(file => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setFormData(prev => ({ 
+            ...prev, 
+            gallery: [...prev.gallery, reader.result as string] 
+          }));
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
+
+  const removeGalleryImage = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      gallery: prev.gallery.filter((_, i) => i !== index)
+    }));
+  };
 
   useEffect(() => {
     const isAuth = localStorage.getItem("admin_auth");
@@ -177,18 +225,77 @@ export default function AdminDashboard() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await addDoc(collection(db, "projects"), {
+      const projectData = {
         ...formData,
-        createdAt: serverTimestamp()
-      });
+        updatedAt: serverTimestamp()
+      };
+      
+      if (isEditing && editingId) {
+        await setDoc(doc(db, "projects", editingId), projectData, { merge: true });
+      } else {
+        await addDoc(collection(db, "projects"), {
+          ...projectData,
+          createdAt: serverTimestamp()
+        });
+      }
+
       setIsModalOpen(false);
-      setFormData({ title: "", category: "", description: "", image: "", client: "" });
+      setIsEditing(false);
+      setEditingId(null);
+      setFormData({ 
+        title: "", 
+        category: "", 
+        description: "", 
+        image: "", 
+        gallery: [],
+        serviceProvided: "",
+        client: "",
+        contractedBy: "",
+        location: "",
+        executionDate: ""
+      });
       fetchData();
     } catch (error) {
       alert("Error al guardar el proyecto.");
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const openEditModal = (project: Project) => {
+    setFormData({
+      title: project.title,
+      category: project.category,
+      description: project.description,
+      image: project.image,
+      gallery: project.gallery || [],
+      serviceProvided: project.serviceProvided || "",
+      client: project.client,
+      contractedBy: project.contractedBy || "",
+      location: project.location || "",
+      executionDate: project.executionDate || ""
+    });
+    setEditingId(project.id);
+    setIsEditing(true);
+    setIsModalOpen(true);
+  };
+
+  const openAddModal = () => {
+    setFormData({ 
+      title: "", 
+      category: "", 
+      description: "", 
+      image: "", 
+      gallery: [],
+      serviceProvided: "",
+      client: "",
+      contractedBy: "",
+      location: "",
+      executionDate: ""
+    });
+    setIsEditing(false);
+    setEditingId(null);
+    setIsModalOpen(true);
   };
 
   return (
@@ -255,7 +362,7 @@ export default function AdminDashboard() {
           
           {activeTab === "projects" && (
             <button 
-              onClick={() => setIsModalOpen(true)}
+              onClick={openAddModal}
               className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-4 rounded-2xl font-black uppercase tracking-widest italic text-sm transition-all hover:scale-105 shadow-xl shadow-red-900/20"
             >
               <PlusCircle className="w-5 h-5" />
@@ -290,12 +397,20 @@ export default function AdminDashboard() {
                           <span className="text-[10px] uppercase tracking-[0.2em] font-black text-red-500 mb-2 block">{project.category}</span>
                           <h3 className="text-xl font-black uppercase italic tracking-tighter">{project.title}</h3>
                         </div>
-                        <button 
-                          onClick={() => handleDeleteProject(project.id)}
-                          className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 transition-colors hover:text-white"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                        <div className="flex gap-2">
+                          <button 
+                            onClick={() => openEditModal(project)}
+                            className="p-3 bg-slate-800 text-slate-400 rounded-xl hover:bg-slate-700 transition-colors hover:text-white"
+                          >
+                            <Pencil className="w-4 h-4" />
+                          </button>
+                          <button 
+                            onClick={() => handleDeleteProject(project.id)}
+                            className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 transition-colors hover:text-white"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
                       
                       <p className="text-slate-400 text-sm leading-relaxed mb-4 line-clamp-2">{project.description}</p>
@@ -472,8 +587,8 @@ export default function AdminDashboard() {
               </button>
 
               <div className="mb-10">
-                <h2 className="text-2xl font-black uppercase italic tracking-tighter">Añadir <span className="text-red-500">Proyecto</span></h2>
-                <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1">Completa los campos para publicar.</p>
+                <h2 className="text-2xl font-black uppercase italic tracking-tighter">{isEditing ? "Editar" : "Añadir"} <span className="text-red-500">Proyecto</span></h2>
+                <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1">{isEditing ? "Actualiza los detalles del proyecto." : "Completa los campos para publicar."}</p>
               </div>
 
               <form onSubmit={handleProjectSubmit} className="space-y-6">
@@ -509,22 +624,32 @@ export default function AdminDashboard() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">URL de la Imagen</label>
-                    <div className="relative">
-                      <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                      <input
-                        type="url"
-                        required
-                        value={formData.image}
-                        onChange={(e) => setFormData({...formData, image: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
-                        placeholder="https://..."
-                      />
+                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Imagen de Portada</label>
+                    <div className="flex flex-col gap-4">
+                      {formData.image && (
+                        <div className="relative w-full h-32 rounded-2xl overflow-hidden border border-slate-800">
+                          <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
+                          <button 
+                            type="button"
+                            onClick={() => setFormData({...formData, image: ""})}
+                            className="absolute top-2 right-2 p-1 bg-red-600 rounded-lg text-white"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
+                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-800 border-dashed rounded-[2rem] cursor-pointer hover:bg-slate-950 transition-colors">
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          <ImageIcon className="w-8 h-8 text-slate-500 mb-2" />
+                          <p className="text-[10px] text-slate-500 uppercase font-black">Seleccionar Imagen</p>
+                        </div>
+                        <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
+                      </label>
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Cliente</label>
+                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Mandante (Cliente)</label>
                     <div className="relative">
                       <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                       <input
@@ -533,9 +658,87 @@ export default function AdminDashboard() {
                         value={formData.client}
                         onChange={(e) => setFormData({...formData, client: e.target.value})}
                         className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
-                        placeholder="Nombre del cliente"
+                        placeholder="Nombre del Mandante"
                       />
                     </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Servicio Prestado</label>
+                    <div className="relative">
+                      <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                      <input
+                        type="text"
+                        value={formData.serviceProvided}
+                        onChange={(e) => setFormData({...formData, serviceProvided: e.target.value})}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        placeholder="Ej. Mantenimiento de Torres"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Contratado por</label>
+                    <div className="relative">
+                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                      <input
+                        type="text"
+                        value={formData.contractedBy}
+                        onChange={(e) => setFormData({...formData, contractedBy: e.target.value})}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        placeholder="Ej. Constructora XYZ"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Ubicación</label>
+                    <div className="relative">
+                      <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                      <input
+                        type="text"
+                        value={formData.location}
+                        onChange={(e) => setFormData({...formData, location: e.target.value})}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        placeholder="Ej. Viña del Mar, Chile"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Fecha de Ejecución</label>
+                    <div className="relative">
+                      <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                      <input
+                        type="text"
+                        value={formData.executionDate}
+                        onChange={(e) => setFormData({...formData, executionDate: e.target.value})}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        placeholder="Ej. Marzo 2024"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Galería de Fotos</label>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+                    {formData.gallery.map((img, idx) => (
+                      <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden border border-slate-800">
+                        <img src={img} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+                        <button 
+                          type="button"
+                          onClick={() => removeGalleryImage(idx)}
+                          className="absolute top-2 right-2 p-1 bg-red-600 rounded-lg text-white"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                    <label className="flex flex-col items-center justify-center aspect-square border-2 border-slate-800 border-dashed rounded-2xl cursor-pointer hover:bg-slate-950 transition-colors">
+                      <Plus className="w-6 h-6 text-slate-500" />
+                      <input type="file" className="hidden" accept="image/*" multiple onChange={handleGalleryUpload} />
+                    </label>
                   </div>
                 </div>
 
@@ -561,7 +764,7 @@ export default function AdminDashboard() {
                       Guardando...
                     </>
                   ) : (
-                    "Publicar Proyecto"
+                    isEditing ? "Guardar Cambios" : "Publicar Proyecto"
                   )}
                 </button>
               </form>

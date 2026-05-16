@@ -5,32 +5,21 @@
       "description": "Represents a project in the company portfolio.",
       "type": "object",
       "properties": {
-        "title": {
-          "type": "string",
-          "description": "Project title"
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "image": { "type": "string", "format": "uri", "description": "Main cover image" },
+        "gallery": { 
+          "type": "array", 
+          "items": { "type": "string", "format": "uri" },
+          "description": "Additional project photos"
         },
-        "category": {
-          "type": "string",
-          "description": "Project category (e.g., Industrial, Residential)"
-        },
-        "description": {
-          "type": "string",
-          "description": "Detailed description of the work done"
-        },
-        "image": {
-          "type": "string",
-          "format": "uri",
-          "description": "URL of the project image"
-        },
-        "client": {
-          "type": "string",
-          "description": "Client name"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time",
-          "description": "When the project was published"
-        }
+        "serviceProvided": { "type": "string", "description": "Servicio prestado" },
+        "client": { "type": "string", "description": "Mandante" },
+        "contractedBy": { "type": "string", "description": "Contratado por" },
+        "location": { "type": "string", "description": "Ubicación" },
+        "executionDate": { "type": "string", "description": "Fecha de ejecución" },
+        "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["title", "category", "description", "image", "client", "createdAt"]
     },

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import { Building2, Building, Mountain, Factory, TowerControl, ChevronRight, HardHat, Shield, CheckCircle2, Loader2 } from "lucide-react";
 import { db } from "../lib/firebase";
@@ -91,31 +92,41 @@ export default function Portfolio() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {allProjects.map((project, idx) => (
-                <motion.div
-                  key={project.id || project.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.1 }}
-                  viewport={{ once: true }}
-                  className="group flex flex-col bg-slate-900 border border-slate-800 rounded-[2rem] overflow-hidden hover:border-red-500/30 transition-all"
-                >
-                  <div className="relative h-64 overflow-hidden">
-                    <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
-                    <div className="absolute top-4 left-4">
-                      <span className="px-4 py-1 bg-red-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full">{project.category}</span>
+              {allProjects.map((project, idx) => {
+                const isStatic = String(project.id).startsWith("static-");
+                const cardContent = (
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.1 }}
+                    viewport={{ once: true }}
+                    className="group flex flex-col h-full bg-slate-900 border border-slate-800 rounded-[2rem] overflow-hidden hover:border-red-500/30 transition-all cursor-pointer"
+                  >
+                    <div className="relative h-64 overflow-hidden">
+                      <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+                      <div className="absolute top-4 left-4">
+                        <span className="px-4 py-1 bg-red-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full">{project.category}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="p-8 flex-grow flex flex-col">
-                    <h3 className="text-xl font-black italic uppercase tracking-tighter mb-4">{project.title}</h3>
-                    <p className="text-slate-400 text-sm mb-6 flex-grow">{project.description}</p>
-                    <div className="pt-6 border-t border-slate-800 flex justify-between items-center text-xs">
-                      <span className="text-slate-500 uppercase tracking-widest font-bold">Cliente: {project.client}</span>
-                      <ChevronRight className="w-4 h-4 text-red-500 group-hover:translate-x-1 transition-transform" />
+                    <div className="p-8 flex-grow flex flex-col">
+                      <h3 className="text-xl font-black italic uppercase tracking-tighter mb-4">{project.title}</h3>
+                      <p className="text-slate-400 text-sm mb-6 flex-grow">{project.description}</p>
+                      <div className="pt-6 border-t border-slate-800 flex justify-between items-center text-xs">
+                        <span className="text-slate-500 uppercase tracking-widest font-bold">Cliente: {project.client}</span>
+                        <ChevronRight className="w-4 h-4 text-red-500 group-hover:translate-x-1 transition-transform" />
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+
+                return isStatic ? (
+                  <div key={project.id || project.title}>{cardContent}</div>
+                ) : (
+                  <Link key={project.id} to={`/portafolio/${project.id}`}>
+                    {cardContent}
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>
