@@ -236,16 +236,18 @@ export default function Home() {
               viewport={{ once: true }}
               className="relative p-4"
             >
-              <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 rounded-full blur-3xl -z-10" />
-              <img 
-                src="https://images.unsplash.com/photo-1544724569-5f546fa6623c?auto=format&fit=crop&q=80&w=800" 
-                alt="Technician working at height" 
-                className="rounded-3xl shadow-2xl border border-slate-800 w-full object-cover aspect-[4/5]"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute -bottom-10 -right-10 bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl hidden md:block">
-                <div className="text-4xl font-black text-red-500 mb-1 italic uppercase tracking-tighter">15+</div>
-                <div className="text-xs font-bold uppercase tracking-widest text-slate-400">Años de Experticia</div>
+              <div className="relative aspect-square w-full max-w-[450px] mx-auto">
+                <img 
+                  src="/technician.jpg" 
+                  alt="Técnico Vertical" 
+                  className="rounded-full shadow-2xl border-4 border-slate-800 w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute top-0 left-0 w-full h-full rounded-full border-2 border-red-500/20 animate-pulse pointer-events-none" />
+                <div className="absolute -bottom-6 -right-6 bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl hidden md:block">
+                  <div className="text-4xl font-black text-red-500 mb-1 italic uppercase tracking-tighter">15+</div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-slate-400">Años de Experticia</div>
+                </div>
               </div>
             </motion.div>
           </div>
