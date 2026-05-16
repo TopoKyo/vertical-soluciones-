@@ -31,13 +31,12 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-2 mb-8 justify-center md:justify-start">
-              <div className="w-8 h-8 bg-red-600 flex items-center justify-center rounded-lg">
-                <Mountain className="text-white w-5 h-5" />
-              </div>
-              <span className="text-lg font-bold tracking-tighter uppercase italic">
-                Vertical <span className="text-red-500">Soluciones</span>
-              </span>
+            <div className="flex items-center gap-3 mb-8 justify-center md:justify-start">
+              <img 
+                src="/VS_blanco.png" 
+                alt="Vertical Soluciones Logo" 
+                className="h-16 w-auto object-contain"
+              />
             </div>
             <p className="text-slate-500 text-sm leading-relaxed mb-8">
               Especialistas en trabajos de alto riesgo y mantenimiento en altura con base en Viña del Mar y operaciones en todo Chile.
