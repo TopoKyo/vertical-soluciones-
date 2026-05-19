@@ -70,7 +70,7 @@ const SERVICES = [
     title: "Mantenimiento Industrial",
     description: "Soluciones de mantenimiento preventivo y correctivo en plantas y procesos.",
     icon: <Factory className="w-8 h-8" />,
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800"
+    image: "/mantenimiento-industrial.jpg"
   },
   {
     title: "Difícil Acceso",
@@ -349,6 +349,81 @@ export default function Home() {
                     {service.description}
                   </p>
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Projects / Portfolio Preview */}
+      <section id="portafolio-destacado" className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-16">
+            <div className="max-w-2xl">
+              <span className="text-red-500 font-bold text-xs tracking-[0.3em] uppercase mb-4 block">Nuestro Trabajo</span>
+              <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter">
+                Proyectos <span className="text-red-500">Destacados</span>
+              </h2>
+            </div>
+            <Link to="/portafolio" className="bg-slate-900 border border-slate-800 hover:bg-slate-800 text-white px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all flex items-center gap-2 group active:scale-95">
+              Ver Todo el Portafolio
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Torre Atlantis",
+                category: "Residencial",
+                image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=800",
+                location: "Viña del Mar"
+              },
+              {
+                title: "Planta Industrial ENEX",
+                category: "Industrial",
+                image: "https://images.unsplash.com/photo-1516939884455-1445c8652f83?auto=format&fit=crop&q=80&w=800",
+                location: "Concón"
+              },
+              {
+                title: "Corporativo CCU",
+                category: "Fachada",
+                image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800",
+                location: "Santiago"
+              }
+            ].map((project, idx) => (
+              <motion.div
+                key={project.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                viewport={{ once: true }}
+                className="group relative h-[500px] rounded-[2.5rem] overflow-hidden border border-slate-800 bg-slate-900"
+              >
+                <img 
+                  src={project.image} 
+                  alt={project.title} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-40"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+                
+                <div className="absolute bottom-0 left-0 right-0 p-10">
+                  <span className="px-3 py-1 bg-red-600 text-[10px] font-black uppercase tracking-widest rounded-full text-white mb-4 inline-block shadow-lg shadow-red-900/40">
+                    {project.category}
+                  </span>
+                  <h3 className="text-2xl font-black italic uppercase tracking-tighter mb-2">{project.title}</h3>
+                  <div className="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase tracking-widest">
+                    <MapPin className="w-3 h-3 text-red-500" />
+                    {project.location}
+                  </div>
+                </div>
+                
+                <Link 
+                  to="/portafolio" 
+                  className="absolute inset-0 z-10"
+                  aria-label={`Ver proyecto ${project.title}`}
+                />
               </motion.div>
             ))}
           </div>
