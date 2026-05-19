@@ -34,37 +34,37 @@ const SERVICES = [
     title: "Impermeabilización",
     description: "Sellado técnico de fachadas y techumbres para protección contra humedad.",
     icon: <Droplets className="w-8 h-8" />,
-    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800"
+    image: "/impermeabilizacion.jpg"
   },
   {
     title: "Reparaciones en Altura",
     description: "Rehabilitación estructural y reparación de elementos en lugares de difícil acceso.",
     icon: <Wrench className="w-8 h-8" />,
-    image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80&w=800"
+    image: "/reparacion-alturas.jpg"
   },
   {
     title: "Trabajos Verticales (Rope Access)",
     description: "Técnicos certificados IRATA/ANETVA para maniobras seguras con cuerdas.",
     icon: <LinkIcon className="w-8 h-8" />,
-    image: "https://images.unsplash.com/photo-1516216628859-9bccecad13ec?auto=format&fit=crop&q=80&w=800"
+    image: "/trabajos-verticales.jpg"
   },
   {
     title: "Limpieza de Fachadas",
     description: "Mantención estética y funcional de vidrios y superficies en altura.",
     icon: <Sparkles className="w-8 h-8" />,
-    image: "https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&q=80&w=800"
+    image: "/limpieza-fachadas.jpg"
   },
   {
     title: "Pintura e Industrias",
     description: "Aplicación de recubrimientos industriales y rehabilitación de fachadas.",
     icon: <Paintbrush className="w-8 h-8" />,
-    image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80&w=800"
+    image: "/pintura-industrias.jpg"
   },
   {
     title: "Líneas de Vida",
     description: "Cálculo, instalación y certificación de sistemas de anclaje y seguridad.",
     icon: <Shield className="w-8 h-8" />,
-    image: "https://images.unsplash.com/photo-1590483734724-38817567d8a4?auto=format&fit=crop&q=80&w=800"
+    image: "/lineas-vida.jpg"
   },
   {
     title: "Mantenimiento Industrial",
@@ -76,7 +76,7 @@ const SERVICES = [
     title: "Difícil Acceso",
     description: "Llegamos donde otros no pueden con soluciones técnicas personalizadas.",
     icon: <Mountain className="w-8 h-8" />,
-    image: "https://images.unsplash.com/photo-1503387762-592dea58ef23?auto=format&fit=crop&q=80&w=800"
+    image: "/dificil-acceso.jpg"
   }
 ];
 
@@ -236,15 +236,29 @@ export default function Home() {
               viewport={{ once: true }}
               className="relative p-4"
             >
-              <div className="relative aspect-square w-full max-w-[450px] mx-auto">
-                <img 
-                  src="/technician.jpg" 
-                  alt="Técnico Vertical" 
-                  className="rounded-full shadow-2xl border-4 border-slate-800 w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute top-0 left-0 w-full h-full rounded-full border-2 border-red-500/20 animate-pulse pointer-events-none" />
-                <div className="absolute -bottom-6 -right-6 bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl hidden md:block">
+              <div className="relative aspect-[3/4] w-full max-w-[850px] mx-auto group">
+                {/* Imagen de fondo (Trabajo en terreno) - Ahora rectangular y más grande */}
+                <div className="absolute inset-0 pointer-events-none z-0">
+                  <img 
+                    src="/background-worker.jpg" 
+                    alt="Trabajo en Terreno" 
+                    className="w-full h-full object-cover rounded-[3rem] border-2 border-slate-800 shadow-2xl transition-all duration-700 group-hover:scale-[1.01] grayscale group-hover:grayscale-0 opacity-90 group-hover:opacity-100"
+                  />
+                </div>
+                
+                {/* Imagen circular principal (Técnico) - Posicionada abajo a la derecha */}
+                <div className="absolute -bottom-16 -right-16 z-20 w-1/2 h-auto aspect-square">
+                  <img 
+                    src="/technician.jpg" 
+                    alt="Técnico Especialista" 
+                    className="rounded-full shadow-2xl border-[10px] border-slate-950 w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 rounded-full border-2 border-red-500/40 animate-pulse pointer-events-none" />
+                </div>
+                
+                {/* Badge de experticia */}
+                <div className="absolute -bottom-6 -left-6 bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl hidden md:block z-30">
                   <div className="text-4xl font-black text-red-500 mb-1 italic uppercase tracking-tighter">15+</div>
                   <div className="text-xs font-bold uppercase tracking-widest text-slate-400">Años de Experticia</div>
                 </div>
