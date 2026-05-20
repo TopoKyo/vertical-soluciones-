@@ -240,7 +240,7 @@ export default function Home() {
                 {/* Imagen de fondo (Trabajo en terreno) - Ahora rectangular y define el tamaño del contenedor */}
                 <div className="relative w-full z-10">
                   <img 
-                    src="https://images.unsplash.com/photo-1541535650810-10d26f597a65?auto=format&fit=crop&q=80&w=800" 
+                    src="/background-worker.jpg" 
                     alt="Trabajo en Terreno" 
                     className="w-full h-auto aspect-[3/4] object-cover rounded-[3rem] border-2 border-slate-800 shadow-2xl transition-all duration-700 group-hover:scale-[1.01] grayscale group-hover:grayscale-0 opacity-90 group-hover:opacity-100"
                   />
@@ -249,7 +249,7 @@ export default function Home() {
                 {/* Imagen circular principal (Técnico) - Posicionada abajo a la derecha */}
                 <div className="absolute -bottom-10 -right-10 md:-bottom-12 md:-right-12 z-20 w-1/2 aspect-square">
                   <img 
-                    src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=800" 
+                    src="/technician.jpg" 
                     alt="Técnico Especialista" 
                     className="rounded-full shadow-2xl border-[6px] md:border-[10px] border-slate-950 w-full h-full object-cover"
                     referrerPolicy="no-referrer"
