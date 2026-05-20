@@ -236,29 +236,29 @@ export default function Home() {
               viewport={{ once: true }}
               className="relative p-4"
             >
-              <div className="relative aspect-[3/4] w-full max-w-[850px] mx-auto group">
-                {/* Imagen de fondo (Trabajo en terreno) - Ahora rectangular y más grande */}
-                <div className="absolute inset-0 pointer-events-none z-0">
+              <div className="relative w-full max-w-[850px] mx-auto group">
+                {/* Imagen de fondo (Trabajo en terreno) - Ahora rectangular y define el tamaño del contenedor */}
+                <div className="relative w-full z-10">
                   <img 
-                    src="/background-worker.jpg" 
+                    src="https://images.unsplash.com/photo-1541535650810-10d26f597a65?auto=format&fit=crop&q=80&w=800" 
                     alt="Trabajo en Terreno" 
-                    className="w-full h-full object-cover rounded-[3rem] border-2 border-slate-800 shadow-2xl transition-all duration-700 group-hover:scale-[1.01] grayscale group-hover:grayscale-0 opacity-90 group-hover:opacity-100"
+                    className="w-full h-auto aspect-[3/4] object-cover rounded-[3rem] border-2 border-slate-800 shadow-2xl transition-all duration-700 group-hover:scale-[1.01] grayscale group-hover:grayscale-0 opacity-90 group-hover:opacity-100"
                   />
                 </div>
                 
                 {/* Imagen circular principal (Técnico) - Posicionada abajo a la derecha */}
-                <div className="absolute -bottom-16 -right-16 z-20 w-1/2 h-auto aspect-square">
+                <div className="absolute -bottom-10 -right-10 md:-bottom-12 md:-right-12 z-20 w-1/2 aspect-square">
                   <img 
-                    src="/technician.jpg" 
+                    src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=800" 
                     alt="Técnico Especialista" 
-                    className="rounded-full shadow-2xl border-[10px] border-slate-950 w-full h-full object-cover"
+                    className="rounded-full shadow-2xl border-[6px] md:border-[10px] border-slate-950 w-full h-full object-cover"
                     referrerPolicy="no-referrer"
                   />
                   <div className="absolute inset-0 rounded-full border-2 border-red-500/40 animate-pulse pointer-events-none" />
                 </div>
                 
                 {/* Badge de experticia */}
-                <div className="absolute -bottom-6 -left-6 bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl hidden md:block z-30">
+                <div className="absolute -bottom-6 -left-6 bg-slate-900 border border-slate-800 p-6 md:p-8 rounded-3xl shadow-2xl hidden md:block z-30">
                   <div className="text-4xl font-black text-red-500 mb-1 italic uppercase tracking-tighter">15+</div>
                   <div className="text-xs font-bold uppercase tracking-widest text-slate-400">Años de Experticia</div>
                 </div>

@@ -114,7 +114,7 @@ export default function AdminDashboard() {
   const handleGalleryUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
-      const fileArray = Array.from(files);
+      const fileArray = Array.from(files) as File[];
       fileArray.forEach(file => {
         const reader = new FileReader();
         reader.onloadend = () => {

@@ -18,15 +18,43 @@ service cloud.firestore {
       return resource.data;
     }
 
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.email == 'chinchuarchibo@gmail.com' && request.auth.token.email_verified == true;
+    }
+
     function isValidProject(data) {
       return data.keys().hasAll(['title', 'category', 'description', 'image', 'client', 'createdAt']) &&
-             data.keys().size() == 6 &&
              data.title is string && data.title.size() <= 200 &&
              data.category is string && data.category.size() <= 100 &&
-             data.description is string && data.description.size() <= 2000 &&
-             data.image is string && data.image.size() <= 500 &&
+             data.description is string && data.description.size() <= 10000 &&
+             data.image is string && data.image.size() <= 5000000 &&
              data.client is string && data.client.size() <= 200 &&
-             data.createdAt is timestamp;
+             data.createdAt is timestamp &&
+             data.get('gallery', []) is list && data.get('gallery', []).size() <= 50 &&
+             data.get('serviceProvided', '') is string && data.get('serviceProvided', '').size() <= 1000 &&
+             data.get('contractedBy', '') is string && data.get('contractedBy', '').size() <= 500 &&
+             data.get('location', '') is string && data.get('location', '').size() <= 500 &&
+             data.get('executionDate', '') is string && data.get('executionDate', '').size() <= 200 &&
+             data.get('updatedAt', request.time) is timestamp;
+    }
+
+    function isValidSettings(data) {
+      return data.keys().hasAll(['phone', 'email', 'address']) &&
+             data.phone is string && data.phone.size() <= 100 &&
+             data.email is string && data.email.size() <= 200 &&
+             data.address is string && data.address.size() <= 500 &&
+             data.get('aiPrompt', '') is string && data.get('aiPrompt', '').size() <= 50000 &&
+             data.get('updatedAt', request.time) is timestamp;
+    }
+
+    function isValidMessage(data) {
+      return data.keys().hasAll(['name', 'email', 'details', 'createdAt']) &&
+             data.name is string && data.name.size() <= 200 &&
+             data.email is string && data.email.size() <= 200 &&
+             data.details is string && data.details.size() <= 10000 &&
+             data.createdAt is timestamp &&
+             data.get('company', '') is string && data.get('company', '').size() <= 200 &&
+             data.get('service', '') is string && data.get('service', '').size() <= 200;
     }
 
     // Default deny
@@ -34,8 +62,8 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    function isAdmin() {
-      return isSignedIn() && request.auth.token.email == 'chinchuarchibo@gmail.com' && request.auth.token.email_verified == true;
+    match /test/connection {
+      allow read: if true;
     }
 
     // Projects collection
@@ -49,11 +77,11 @@ service cloud.firestore {
 
     match /settings/{settingId} {
       allow read: if true;
-      allow write: if isAdmin();
+      allow write: if isAdmin() && isValidSettings(incoming());
     }
 
     match /messages/{messageId} {
-      allow create: if true;
+      allow create: if isValidMessage(incoming());
       allow read, delete: if isAdmin();
     }
   }
