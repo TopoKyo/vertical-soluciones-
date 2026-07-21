@@ -96,7 +96,22 @@ const DIFFERENTIATORS = [
   { title: "Seguridad y Eficiencia", text: "Protocolos estrictos para minimizar riesgos y tiempos.", icon: <CheckCircle2 /> }
 ];
 
+const HERO_IMAGES = [
+  "/ferrovial-15.jpg",
+  "/trabajos-verticales.jpg",
+  "/background-worker.jpg"
+];
+
 export default function Home() {
+  const [currentHeroImage, setCurrentHeroImage] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentHeroImage((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
+
   const [formState, setFormState] = useState({
     name: "",
     company: "",
@@ -153,43 +168,66 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <header id="inicio" className="relative h-screen flex items-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="/ferrovial-15.jpg" 
-            alt="Vertical work on high rise building" 
-            className="w-full h-full object-cover opacity-60"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+      <header id="inicio" className="relative h-screen flex items-center overflow-hidden pt-20">
+        <div className="absolute inset-0 z-0 bg-slate-950">
+          <AnimatePresence>
+            <motion.img 
+              key={currentHeroImage}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 0.6, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+              src={HERO_IMAGES[currentHeroImage]} 
+              alt="Vertical work on high rise building" 
+              className="absolute inset-0 w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-10" />
         </div>
         
-        <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
+        <div className="relative z-20 max-w-7xl mx-auto px-6 w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="max-w-3xl"
+            className="max-w-4xl"
           >
-            <span className="inline-block px-4 py-1.5 bg-red-600/10 border border-red-500/20 text-red-500 rounded-full text-xs font-bold tracking-[0.2em] uppercase mb-6">
-              Expertos en Trabajos de Alto Riesgo
+            <span className="inline-block px-4 py-2 bg-red-600/10 border border-red-500/20 text-red-500 rounded-xl md:rounded-full text-[10px] md:text-xs font-bold tracking-widest uppercase mb-6 text-balance leading-relaxed">
+              Especialistas en inspecciones técnicas, evaluación de daños y trabajos en altura.
             </span>
-            <h1 className="text-5xl md:text-8xl font-black italic uppercase leading-none mb-6 tracking-tighter">
-              Soluciones <br />
-              Verticales de <br />
-              <span className="text-red-500">Alto Nivel</span>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black italic uppercase leading-[1.05] mb-6 tracking-tighter text-white">
+              Respuesta inmediata ante <br className="hidden md:block" />
+              emergencias y <br className="hidden md:block" />
+              <span className="text-red-500">contingencias climáticas</span>
             </h1>
-            <p className="text-lg md:text-xl text-slate-400 mb-10 max-w-xl leading-relaxed">
-              Mantenimiento industrial, rope access y rehabilitación de fachadas en todo Chile. Seguridad extrema, rapidez de ejecución y resultados profesionales.
+            <p className="text-sm md:text-base lg:text-lg text-slate-300 mb-10 max-w-3xl leading-relaxed">
+              Ante temporales y otras contingencias, contamos con profesionales especializados en inspecciones técnicas, catastros, evaluación de daños y reparaciones en altura. Elaboramos informes técnicos firmados por un Constructor Civil para puentes, edificios, edificios gubernamentales, condominios, industrias y todo tipo de estructuras. Contáctenos para coordinar una visita técnica y recibir una solución rápida, segura y profesional
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="#contacto" className="bg-red-600 hover:bg-red-700 text-white px-10 py-5 rounded-full text-sm font-bold tracking-widest uppercase transition-all shadow-xl shadow-red-900/30 flex items-center justify-center gap-2 group active:scale-95">
-                Solicitar Cotización
+              <a href="#contacto" className="bg-red-600 hover:bg-red-500 text-white px-10 py-5 rounded-full text-sm font-bold tracking-widest uppercase transition-all shadow-xl shadow-red-900/30 flex items-center justify-center gap-2 group active:scale-95">
+                Solicitar Inspección
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </a>
-              <a href="#servicios" className="border border-slate-700 hover:bg-slate-800 text-white px-10 py-5 rounded-full text-sm font-bold tracking-widest uppercase transition-all flex items-center justify-center gap-2 active:scale-95">
-                Nuestros Servicios
+              <a href="#contacto" className="bg-white/5 border border-white/10 hover:bg-white/10 backdrop-blur-sm text-white px-10 py-5 rounded-full text-sm font-bold tracking-widest uppercase transition-all flex items-center justify-center gap-2 active:scale-95">
+                Contáctanos
               </a>
+            </div>
+            
+            {/* Slider Indicators */}
+            <div className="flex items-center gap-3 mt-12">
+              {HERO_IMAGES.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentHeroImage(idx)}
+                  className={`transition-all duration-500 rounded-full ${
+                    idx === currentHeroImage 
+                      ? "w-8 h-2 bg-red-500" 
+                      : "w-2 h-2 bg-white/30 hover:bg-white/50"
+                  }`}
+                  aria-label={`Ir a la imagen ${idx + 1}`}
+                />
+              ))}
             </div>
           </motion.div>
         </div>
