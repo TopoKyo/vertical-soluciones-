@@ -124,7 +124,13 @@ export default function Home() {
   const [settings, setSettings] = useState({
     phone: "+56 9 5398 8893",
     email: "contacto@verticalsoluciones.cl",
-    address: "Av. Libertad 269, Viña del Mar"
+    address: "Av. Libertad 269, Viña del Mar",
+    heroTagline: "Especialistas en inspecciones técnicas, evaluación de daños y trabajos en altura.",
+    heroTitleLine1: "Respuesta inmediata",
+    heroTitleLine2: "ante",
+    heroTitleLine3: "emergencias y",
+    heroTitleHighlight: "contingencias climáticas",
+    heroDescription: "Ante temporales y otras contingencias, contamos con profesionales especializados en inspecciones técnicas, catastros, evaluación de daños y reparaciones en altura. Elaboramos informes técnicos firmados por un Constructor Civil para puentes, edificios, edificios gubernamentales, condominios, industrias y todo tipo de estructuras. Contáctenos para coordinar una visita técnica y recibir una solución rápida, segura y profesional"
   });
 
   useEffect(() => {
@@ -133,7 +139,11 @@ export default function Home() {
         const docRef = doc(db, "settings", "contact");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setSettings(docSnap.data() as any);
+          const data = docSnap.data();
+          setSettings(prev => ({
+            ...prev,
+            ...data
+          }));
         }
       } catch (error) {
         console.error("Error fetching settings:", error);
@@ -193,16 +203,18 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="max-w-4xl"
           >
-            <span className="inline-block px-4 py-2 bg-red-600/10 border border-red-500/20 text-red-500 rounded-xl md:rounded-full text-[10px] md:text-xs font-bold tracking-widest uppercase mb-6 text-balance leading-relaxed">
-              Especialistas en inspecciones técnicas, evaluación de daños y trabajos en altura.
-            </span>
+            {settings.heroTagline && (
+              <span className="inline-block px-4 py-2 bg-red-600/10 border border-red-500/20 text-red-500 rounded-xl md:rounded-full text-[10px] md:text-xs font-bold tracking-widest uppercase mb-6 text-balance leading-relaxed">
+                {settings.heroTagline}
+              </span>
+            )}
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black italic uppercase leading-[1.05] mb-6 tracking-tighter text-white">
-              Respuesta inmediata ante <br className="hidden md:block" />
-              emergencias y <br className="hidden md:block" />
-              <span className="text-red-500">contingencias climáticas</span>
+              {settings.heroTitleLine1} {settings.heroTitleLine2 && <br className="hidden md:block" />}
+              {settings.heroTitleLine2} {settings.heroTitleLine3 && <br className="hidden md:block" />}
+              {settings.heroTitleLine3} <span className="text-red-500">{settings.heroTitleHighlight}</span>
             </h1>
-            <p className="text-sm md:text-base lg:text-lg text-slate-300 mb-10 max-w-3xl leading-relaxed">
-              Ante temporales y otras contingencias, contamos con profesionales especializados en inspecciones técnicas, catastros, evaluación de daños y reparaciones en altura. Elaboramos informes técnicos firmados por un Constructor Civil para puentes, edificios, edificios gubernamentales, condominios, industrias y todo tipo de estructuras. Contáctenos para coordinar una visita técnica y recibir una solución rápida, segura y profesional
+            <p className="text-sm md:text-base lg:text-lg text-slate-300 mb-10 max-w-3xl leading-relaxed whitespace-pre-wrap">
+              {settings.heroDescription}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="#contacto" className="bg-red-600 hover:bg-red-500 text-white px-10 py-5 rounded-full text-sm font-bold tracking-widest uppercase transition-all shadow-xl shadow-red-900/30 flex items-center justify-center gap-2 group active:scale-95">

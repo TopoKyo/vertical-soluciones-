@@ -82,7 +82,12 @@ export default function AdminDashboard() {
     phone: "",
     email: "",
     address: "",
-    aiPrompt: ""
+    heroTagline: "",
+    heroTitleLine1: "",
+    heroTitleLine2: "",
+    heroTitleLine3: "",
+    heroTitleHighlight: "",
+    heroDescription: ""
   });
   const [isSavingSettings, setIsSavingSettings] = useState(false);
 
@@ -533,6 +538,81 @@ export default function AdminDashboard() {
                         placeholder="Calle, Ciudad, Región"
                       />
                     </div>
+                  </div>
+
+                  <div className="pt-8 mb-8 border-t border-slate-800">
+                    <h2 className="text-xl font-black uppercase italic tracking-tighter mb-2">Textos del Hero (Inicio)</h2>
+                    <p className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">Modifica los textos principales que aparecen en la cabecera de la página web.</p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Etiqueta (Tagline)</label>
+                    <input
+                      type="text"
+                      value={settings.heroTagline}
+                      onChange={(e) => setSettings({...settings, heroTagline: e.target.value})}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                      placeholder="Especialistas en inspecciones..."
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Título Línea 1</label>
+                      <input
+                        type="text"
+                        value={settings.heroTitleLine1}
+                        onChange={(e) => setSettings({...settings, heroTitleLine1: e.target.value})}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        placeholder="Respuesta inmediata"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Título Línea 2</label>
+                      <input
+                        type="text"
+                        value={settings.heroTitleLine2}
+                        onChange={(e) => setSettings({...settings, heroTitleLine2: e.target.value})}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        placeholder="ante"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Título Línea 3</label>
+                      <input
+                        type="text"
+                        value={settings.heroTitleLine3}
+                        onChange={(e) => setSettings({...settings, heroTitleLine3: e.target.value})}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        placeholder="emergencias y"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Título Texto Resaltado (Rojo)</label>
+                      <input
+                        type="text"
+                        value={settings.heroTitleHighlight}
+                        onChange={(e) => setSettings({...settings, heroTitleHighlight: e.target.value})}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        placeholder="contingencias climáticas"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Descripción (Párrafo principal)</label>
+                    <textarea
+                      rows={4}
+                      value={settings.heroDescription}
+                      onChange={(e) => setSettings({...settings, heroDescription: e.target.value})}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white resize-none"
+                      placeholder="Ante temporales y otras contingencias..."
+                    />
                   </div>
 
                   <button
