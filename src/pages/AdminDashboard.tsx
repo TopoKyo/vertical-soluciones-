@@ -535,18 +535,6 @@ export default function AdminDashboard() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Base de Conocimiento AI</label>
-                    <textarea
-                      rows={6}
-                      value={settings.aiPrompt}
-                      onChange={(e) => setSettings({...settings, aiPrompt: e.target.value})}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white resize-none"
-                      placeholder="Escribe aquí la información sobre la empresa, servicios, precios o lo que quieras que el chatbot sepa para responder..."
-                    />
-                    <p className="text-[10px] text-slate-600 uppercase tracking-widest font-bold ml-2">Usa este espacio para dar contexto al asistente virtual.</p>
-                  </div>
-
                   <button
                     type="submit"
                     disabled={isSavingSettings}
