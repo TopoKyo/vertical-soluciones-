@@ -18,7 +18,8 @@ export default function AdminLogin() {
       const result = await signInWithPopup(auth, provider);
       
       // Check if it's the allowed admin email
-      if (result.user.email === "chinchuarchibo@gmail.com") {
+      const allowedEmails = ["chinchuarchibo@gmail.com", "johnverticalvs@gmail.com", "Johnverticalvs@gmail.com"];
+      if (allowedEmails.includes(result.user.email || "")) {
         localStorage.setItem("admin_auth", "true");
         navigate("/admin/dashboard");
       } else {
@@ -64,8 +65,7 @@ export default function AdminLogin() {
 
           <div className="p-6 bg-slate-950/50 border border-slate-800 rounded-2xl text-center">
             <p className="text-slate-400 text-sm mb-6 leading-relaxed">
-              Para gestionar el portafolio, accede con tu cuenta autorizada: <br/>
-              <span className="text-white font-bold">chinchuarchibo@gmail.com</span>
+              Para gestionar el portafolio, accede con tu cuenta autorizada.
             </p>
 
             <button

@@ -75,6 +75,7 @@ export default function AdminDashboard() {
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // Settings state
@@ -189,13 +190,12 @@ export default function AdminDashboard() {
   };
 
   const handleDeleteProject = async (id: string) => {
-    if (window.confirm("¿Estás seguro de eliminar este proyecto?")) {
-      try {
-        await deleteDoc(doc(db, "projects", id));
-        setProjects(projects.filter(p => p.id !== id));
-      } catch (error) {
-        alert("Error al eliminar el proyecto.");
-      }
+    try {
+      await deleteDoc(doc(db, "projects", id));
+      setProjects(projects.filter(p => p.id !== id));
+      setDeleteConfirmId(null);
+    } catch (error) {
+      console.error("Error al eliminar el proyecto:", error);
     }
   };
 
@@ -409,12 +409,21 @@ export default function AdminDashboard() {
                           >
                             <Pencil className="w-4 h-4" />
                           </button>
-                          <button 
-                            onClick={() => handleDeleteProject(project.id)}
-                            className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 transition-colors hover:text-white"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          {deleteConfirmId === project.id ? (
+                            <button 
+                              onClick={() => handleDeleteProject(project.id)}
+                              className="p-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors font-bold text-xs"
+                            >
+                              Seguro?
+                            </button>
+                          ) : (
+                            <button 
+                              onClick={() => setDeleteConfirmId(project.id)}
+                              className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 transition-colors hover:text-white"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          )}
                         </div>
                       </div>
                       

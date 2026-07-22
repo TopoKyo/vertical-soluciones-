@@ -19,7 +19,7 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return isSignedIn() && request.auth.token.email == 'chinchuarchibo@gmail.com' && request.auth.token.email_verified == true;
+      return isSignedIn() && (request.auth.token.email == 'chinchuarchibo@gmail.com' || request.auth.token.email.lower() == 'johnverticalvs@gmail.com');
     }
 
     function isValidProject(data) {
@@ -43,7 +43,12 @@ service cloud.firestore {
              data.phone is string && data.phone.size() <= 100 &&
              data.email is string && data.email.size() <= 200 &&
              data.address is string && data.address.size() <= 500 &&
-             data.get('aiPrompt', '') is string && data.get('aiPrompt', '').size() <= 50000 &&
+             data.get('heroTagline', '') is string && data.get('heroTagline', '').size() <= 500 &&
+             data.get('heroTitleLine1', '') is string && data.get('heroTitleLine1', '').size() <= 500 &&
+             data.get('heroTitleLine2', '') is string && data.get('heroTitleLine2', '').size() <= 500 &&
+             data.get('heroTitleLine3', '') is string && data.get('heroTitleLine3', '').size() <= 500 &&
+             data.get('heroTitleHighlight', '') is string && data.get('heroTitleHighlight', '').size() <= 500 &&
+             data.get('heroDescription', '') is string && data.get('heroDescription', '').size() <= 5000 &&
              data.get('updatedAt', request.time) is timestamp;
     }
 
