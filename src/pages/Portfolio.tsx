@@ -66,7 +66,26 @@ export default function Portfolio() {
                     </div>
                     <div className="p-8 flex-grow flex flex-col">
                       <h3 className="text-xl font-black italic uppercase tracking-tighter mb-4">{project.title}</h3>
-                      <p className="text-slate-400 text-sm mb-6 flex-grow">{project.description}</p>
+                      <div className="flex-grow flex flex-col gap-2 mb-6 text-sm">
+                        {project.location && (
+                          <div className="flex justify-between items-center py-2 border-b border-slate-800/50">
+                            <span className="text-slate-500 font-bold uppercase text-[10px] tracking-wider">Ubicación</span>
+                            <span className="text-slate-300 text-right">{project.location}</span>
+                          </div>
+                        )}
+                        {project.serviceProvided && (
+                          <div className="flex justify-between items-center py-2 border-b border-slate-800/50">
+                            <span className="text-slate-500 font-bold uppercase text-[10px] tracking-wider">Servicio</span>
+                            <span className="text-slate-300 text-right line-clamp-1">{project.serviceProvided}</span>
+                          </div>
+                        )}
+                        {project.executionDate && (
+                          <div className="flex justify-between items-center py-2 border-b border-slate-800/50">
+                            <span className="text-slate-500 font-bold uppercase text-[10px] tracking-wider">Fecha</span>
+                            <span className="text-slate-300 text-right">{project.executionDate}</span>
+                          </div>
+                        )}
+                      </div>
                       <div className="pt-6 border-t border-slate-800 flex justify-between items-center text-xs">
                         <span className="text-slate-500 uppercase tracking-widest font-bold">Cliente: {project.client}</span>
                         <ChevronRight className="w-4 h-4 text-red-500 group-hover:translate-x-1 transition-transform" />
