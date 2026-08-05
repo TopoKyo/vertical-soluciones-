@@ -5,49 +5,6 @@ import { Building2, Building, Mountain, Factory, TowerControl, ChevronRight, Har
 import { db } from "../lib/firebase";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
-const STATIC_PROJECTS = [
-  {
-    id: "static-1",
-    title: "Torre Atlantis - Viña del Mar",
-    category: "Residencial / Fachada",
-    description: "Impermeabilización total de fachadas y sellado de ventanales termo-panel en torre de 25 pisos.",
-    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=800",
-    client: "Inmobiliaria Mar del Plata",
-  },
-  {
-    id: "static-2",
-    title: "Planta Industrial ENEX",
-    category: "Mantenimiento Industrial",
-    description: "Limpieza técnica de silos y estructuras metálicas de alto alcance mediante sistemas de cuerdas.",
-    image: "https://images.unsplash.com/photo-1516939884455-1445c8652f83?auto=format&fit=crop&q=80&w=800",
-    client: "ENEX Chile",
-  },
-  {
-    id: "static-3",
-    title: "Edificio Corporativo CCU",
-    category: "Corporativo",
-    description: "Lavado de fachada curtain wall y mantención de sistemas de anclaje certificados.",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800",
-    client: "CCU S.A.",
-  },
-  {
-    id: "static-4",
-    title: "Minera Los Pelambres",
-    category: "Minería",
-    description: "Instalación de líneas de vida definitivas en correas transportadoras y chancadores.",
-    image: "https://images.unsplash.com/photo-1579389083395-4507e9f4c171?auto=format&fit=crop&q=80&w=800",
-    client: "Antofagasta Minerals",
-  },
-  {
-    id: "static-5",
-    title: "Centro Logístico San Antonio",
-    category: "Industrial",
-    description: "Pintura industrial de cubiertas y reparación de canaletas en bodegas de gran formato.",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800",
-    client: "DLP Logística",
-  }
-];
-
 export default function Portfolio() {
   const [dbProjects, setDbProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -68,7 +25,7 @@ export default function Portfolio() {
     fetchProjects();
   }, []);
 
-  const allProjects = [...dbProjects, ...STATIC_PROJECTS];
+  const allProjects = [...dbProjects];
 
   return (
     <div className="pt-24 min-h-screen bg-slate-950 text-slate-50">
@@ -92,9 +49,8 @@ export default function Portfolio() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {allProjects.map((project, idx) => {
-                const isStatic = String(project.id).startsWith("static-");
-                const cardContent = (
+              {allProjects.map((project, idx) => (
+                <Link key={project.id} to={`/portafolio/${project.id}`}>
                   <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -117,16 +73,8 @@ export default function Portfolio() {
                       </div>
                     </div>
                   </motion.div>
-                );
-
-                return isStatic ? (
-                  <div key={project.id || project.title}>{cardContent}</div>
-                ) : (
-                  <Link key={project.id} to={`/portafolio/${project.id}`}>
-                    {cardContent}
-                  </Link>
-                );
-              })}
+                </Link>
+              ))}
             </div>
           )}
         </div>

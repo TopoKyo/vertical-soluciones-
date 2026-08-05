@@ -27,7 +27,7 @@ import {
 } from "lucide-react";
 
 import { db } from "../lib/firebase";
-import { collection, addDoc, serverTimestamp, doc, getDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, doc, getDoc, getDocs, query, orderBy, limit } from "firebase/firestore";
 
 const SERVICES = [
   {
@@ -132,9 +132,10 @@ export default function Home() {
     heroTitleHighlight: "contingencias climáticas",
     heroDescription: "Ante temporales y otras contingencias, contamos con profesionales especializados en inspecciones técnicas, catastros, evaluación de daños y reparaciones en altura. Elaboramos informes técnicos firmados por un Constructor Civil para puentes, edificios, edificios gubernamentales, condominios, industrias y todo tipo de estructuras. Contáctenos para coordinar una visita técnica y recibir una solución rápida, segura y profesional"
   });
+  const [featuredProjects, setFeaturedProjects] = useState<any[]>([]);
 
   useEffect(() => {
-    async function fetchSettings() {
+    async function fetchSettingsAndProjects() {
       try {
         const docRef = doc(db, "settings", "contact");
         const docSnap = await getDoc(docRef);
@@ -145,11 +146,16 @@ export default function Home() {
             ...data
           }));
         }
+
+        const q = query(collection(db, "projects"), orderBy("createdAt", "desc"), limit(3));
+        const projectsSnap = await getDocs(q);
+        const projects = projectsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setFeaturedProjects(projects);
       } catch (error) {
-        console.error("Error fetching settings:", error);
+        console.error("Error fetching settings or projects:", error);
       }
     }
-    fetchSettings();
+    fetchSettingsAndProjects();
   }, []);
 
   const handleContactSubmit = async (e: React.FormEvent) => {
@@ -422,28 +428,9 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Torre Atlantis",
-                category: "Residencial",
-                image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=800",
-                location: "Viña del Mar"
-              },
-              {
-                title: "Planta Industrial ENEX",
-                category: "Industrial",
-                image: "https://images.unsplash.com/photo-1516939884455-1445c8652f83?auto=format&fit=crop&q=80&w=800",
-                location: "Concón"
-              },
-              {
-                title: "Corporativo CCU",
-                category: "Fachada",
-                image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800",
-                location: "Santiago"
-              }
-            ].map((project, idx) => (
+            {featuredProjects.map((project, idx) => (
               <motion.div
-                key={project.title}
+                key={project.id || project.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
@@ -465,12 +452,12 @@ export default function Home() {
                   <h3 className="text-2xl font-black italic uppercase tracking-tighter mb-2">{project.title}</h3>
                   <div className="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase tracking-widest">
                     <MapPin className="w-3 h-3 text-red-500" />
-                    {project.location}
+                    {project.location || project.client}
                   </div>
                 </div>
                 
                 <Link 
-                  to="/portafolio" 
+                  to={`/portafolio/${project.id}`} 
                   className="absolute inset-0 z-10"
                   aria-label={`Ver proyecto ${project.title}`}
                 />
