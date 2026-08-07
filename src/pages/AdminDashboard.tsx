@@ -22,7 +22,8 @@ import {
   CheckCircle,
   Calendar,
   Briefcase,
-  Pencil
+  Pencil,
+  Link as LinkIcon
 } from "lucide-react";
 import { db, auth } from "../lib/firebase";
 import { 
@@ -66,10 +67,22 @@ interface Message {
   createdAt: any;
 }
 
+interface JobApplicationData {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  certifications: string;
+  experience: string;
+  portfolioUrl: string;
+  createdAt: any;
+}
+
 export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState<"projects" | "settings" | "messages">("projects");
+  const [activeTab, setActiveTab] = useState<"projects" | "settings" | "messages" | "applications">("projects");
   const [projects, setProjects] = useState<Project[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [applications, setApplications] = useState<JobApplicationData[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -175,6 +188,14 @@ export default function AdminDashboard() {
           ...doc.data()
         })) as Message[];
         setMessages(data);
+      } else if (activeTab === "applications") {
+        const q = query(collection(db, "job_applications"), orderBy("createdAt", "desc"), limit(50));
+        const querySnapshot = await getDocs(q);
+        const data = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as JobApplicationData[];
+        setApplications(data);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -336,6 +357,13 @@ export default function AdminDashboard() {
             <SettingsIcon className="w-4 h-4" />
             Configuración
           </button>
+          <button 
+            onClick={() => setActiveTab("applications")}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "applications" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"}`}
+          >
+            <Briefcase className="w-4 h-4" />
+            Postulaciones
+          </button>
         </nav>
 
         <div className="p-6 mt-auto border-t border-slate-800">
@@ -357,11 +385,13 @@ export default function AdminDashboard() {
               {activeTab === "projects" && <>Gestión de <span className="text-red-500">Portafolio</span></>}
               {activeTab === "messages" && <>Bandeja de <span className="text-red-500">Mensajes</span></>}
               {activeTab === "settings" && <>Ajustes de <span className="text-red-500">Contacto</span></>}
+              {activeTab === "applications" && <>Bolsa de <span className="text-red-500">Trabajo</span></>}
             </h1>
             <p className="text-slate-500 text-sm font-bold uppercase tracking-widest">
               {activeTab === "projects" && "Añade o elimina proyectos realizados por la empresa."}
               {activeTab === "messages" && "Mensajes recibidos a través del formulario de contacto."}
               {activeTab === "settings" && "Actualiza la información de contacto global del sitio."}
+              {activeTab === "applications" && "Revisa las postulaciones de técnicos y profesionales."}
             </p>
           </div>
           
@@ -633,6 +663,84 @@ export default function AdminDashboard() {
                   </button>
                 </form>
               </motion.div>
+            )}
+
+            {activeTab === "applications" && (
+              <div className="space-y-6">
+                {applications.length === 0 ? (
+                  <div className="text-center py-20 bg-slate-900/50 border border-slate-800 rounded-3xl">
+                    <Briefcase className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold mb-2">Sin Postulaciones</h3>
+                    <p className="text-slate-500 text-sm">Aún no hay postulaciones recibidas.</p>
+                  </div>
+                ) : (
+                  applications.map((app) => (
+                    <motion.div 
+                      key={app.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-slate-900 border border-slate-800 rounded-3xl p-8 relative"
+                    >
+                      <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-6">
+                        <div>
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-xl font-black italic uppercase tracking-tighter">{app.name}</h3>
+                            <span className="px-3 py-1 bg-red-600/10 text-red-500 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                              Postulante
+                            </span>
+                          </div>
+                          <div className="flex flex-col sm:flex-row gap-4 text-slate-400 text-sm font-medium">
+                            <div className="flex items-center gap-2"><Mail className="w-4 h-4" /> {app.email}</div>
+                            <div className="flex items-center gap-2"><Phone className="w-4 h-4" /> {app.phone}</div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Recibido</div>
+                          <div className="text-sm font-medium">{app.createdAt?.toDate().toLocaleDateString('es-CL', {
+                            day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                          })}</div>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-slate-950 rounded-2xl mb-6 border border-slate-800">
+                        <div>
+                          <h4 className="text-[10px] uppercase font-bold tracking-[0.2em] text-slate-500 mb-2 flex items-center gap-2">
+                            <CheckCircle className="w-3 h-3 text-red-500" /> Experiencia Laboral
+                          </h4>
+                          <p className="text-sm leading-relaxed whitespace-pre-wrap text-slate-300">
+                            {app.experience}
+                          </p>
+                        </div>
+                        <div className="space-y-6">
+                          <div>
+                            <h4 className="text-[10px] uppercase font-bold tracking-[0.2em] text-slate-500 mb-2 flex items-center gap-2">
+                              <CheckCircle className="w-3 h-3 text-red-500" /> Certificaciones
+                            </h4>
+                            <p className="text-sm leading-relaxed whitespace-pre-wrap text-slate-300">
+                              {app.certifications || "No especificadas"}
+                            </p>
+                          </div>
+                          {app.portfolioUrl && (
+                            <div>
+                              <h4 className="text-[10px] uppercase font-bold tracking-[0.2em] text-slate-500 mb-2 flex items-center gap-2">
+                                <LinkIcon className="w-3 h-3 text-red-500" /> Enlace
+                              </h4>
+                              <a 
+                                href={app.portfolioUrl} 
+                                target="_blank" 
+                                rel="noreferrer"
+                                className="text-sm text-blue-400 hover:text-blue-300 underline"
+                              >
+                                {app.portfolioUrl}
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))
+                )}
+              </div>
             )}
           </div>
         )}

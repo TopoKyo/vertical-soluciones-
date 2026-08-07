@@ -15,6 +15,7 @@ import Portfolio from "./pages/Portfolio";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProjectDetail from "./pages/ProjectDetail";
+import JobApplication from "./pages/JobApplication";
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -57,6 +58,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/portafolio" element={<Portfolio />} />
             <Route path="/portafolio/:id" element={<ProjectDetail />} />
+            <Route path="/trabaja-con-nosotros" element={<JobApplication />} />
             <Route path="/admin" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
           </Routes>

@@ -545,6 +545,26 @@ export default function Home() {
         </div>
       </section>
 
+      {/* CTA Trabaja con nosotros */}
+      <section className="py-24 bg-red-600 border-y border-red-500 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
+          <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter mb-6 text-white">
+            Únete a nuestro equipo
+          </h2>
+          <p className="text-red-100 text-lg mb-10 max-w-2xl mx-auto font-medium">
+            Estamos buscando técnicos verticales especialistas. Si tienes experiencia en trabajos en altura y quieres ser parte de un equipo profesional y seguro, queremos conocerte.
+          </p>
+          <Link 
+            to="/trabaja-con-nosotros"
+            className="inline-flex items-center gap-2 bg-slate-950 text-white px-10 py-5 rounded-full text-sm font-bold tracking-widest uppercase transition-all shadow-xl hover:bg-slate-900 group"
+          >
+            Postula Aquí
+            <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
+      </section>
+
       {/* Contact Section */}
       <section id="contacto" className="py-24 bg-slate-900/20 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-6">
