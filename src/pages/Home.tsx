@@ -553,7 +553,7 @@ export default function Home() {
             Únete a nuestro equipo
           </h2>
           <p className="text-red-100 text-lg mb-10 max-w-2xl mx-auto font-medium">
-            Estamos buscando técnicos verticales especialistas. Si tienes experiencia en trabajos en altura y quieres ser parte de un equipo profesional y seguro, queremos conocerte.
+            ¿Buscas empleos como técnico de trabajos en altura en Valparaíso o Chile? Estamos buscando especialistas para proyectos de arreglo de edificios, mantenimiento y limpieza de fachadas. Si tienes experiencia, únete a Vertical Soluciones.
           </p>
           <Link 
             to="/trabaja-con-nosotros"
@@ -574,7 +574,7 @@ export default function Home() {
                 ¿Listo para su <br /> <span className="text-red-500">Próximo Desafío?</span>
               </h2>
               <p className="text-slate-400 text-lg mb-12">
-                Agende una visita técnica o solicite su presupuesto personalizado. Nuestro equipo de expertos está listo para asesorarlo.
+                Agende una visita técnica o solicite su presupuesto personalizado para arreglos de edificios, mantenimiento industrial o trabajos verticales en la V Región (Valparaíso, Viña del Mar) y todo Chile. Nuestro equipo de expertos está listo para asesorarlo.
               </p>
               
               <div className="space-y-8">
