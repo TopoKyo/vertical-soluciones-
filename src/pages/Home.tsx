@@ -331,7 +331,7 @@ export default function Home() {
                 Compromiso con la <br /> <span className="text-red-500">Excelencia Técnica</span>
               </h2>
               <p className="text-slate-400 mb-8 leading-relaxed text-lg">
-                Vertical Soluciones nace como respuesta a la creciente necesidad de servicios especializados en estructuras complejas. Utilizamos técnicos certificados IRATA/ANETVA, garantizando maniobras seguras y eficientes bajo los más altos protocolos de riesgo.
+                Vertical Soluciones nace como respuesta a la creciente necesidad de servicios especializados en estructuras complejas, destacándonos como líderes en trabajos en altura Viña del Mar y la Región de Valparaíso. Utilizamos técnicos certificados IRATA/ANETVA, garantizando maniobras seguras y eficientes bajo los más altos protocolos de riesgo.
               </p>
               <ul className="space-y-4 mb-10">
                 {[
