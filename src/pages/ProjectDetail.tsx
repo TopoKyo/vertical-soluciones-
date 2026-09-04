@@ -54,7 +54,7 @@ export default function ProjectDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen pt-24 bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen pt-24 bg-slate-950 flex items-center justify-center">
         <Loader2 className="w-10 h-10 text-red-500 animate-spin" />
       </div>
     );
@@ -62,7 +62,7 @@ export default function ProjectDetail() {
 
   if (!project) {
     return (
-      <div className="min-h-screen pt-24 bg-slate-50 flex flex-col items-center justify-center px-6 text-center">
+      <div className="min-h-screen pt-24 bg-slate-950 flex flex-col items-center justify-center px-6 text-center">
         <h1 className="text-4xl font-black uppercase italic tracking-tighter mb-4">Proyecto no encontrado</h1>
         <Link to="/portafolio" className="text-red-500 font-bold uppercase text-sm tracking-widest flex items-center gap-2">
           <ChevronLeft className="w-4 h-4" />
@@ -81,7 +81,7 @@ export default function ProjectDetail() {
   ];
 
   return (
-    <div className="pt-24 min-h-screen bg-slate-50 text-slate-900 pb-20">
+    <div className="pt-24 min-h-screen bg-slate-950 text-slate-50 pb-20">
       <div className="max-w-7xl mx-auto px-6">
         {/* Breadcrumb */}
         <Link to="/portafolio" className="inline-flex items-center gap-2 text-slate-500 hover:text-red-500 transition-colors uppercase text-[10px] font-black tracking-widest mb-8">
@@ -95,7 +95,7 @@ export default function ProjectDetail() {
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="relative aspect-video rounded-[2rem] overflow-hidden bg-white border border-slate-200 group"
+              className="relative aspect-video rounded-[2rem] overflow-hidden bg-slate-900 border border-slate-800 group"
             >
               <img 
                 src={selectedImage || project.image} 
@@ -104,8 +104,8 @@ export default function ProjectDetail() {
                 referrerPolicy="no-referrer"
               />
               <div className="absolute top-6 right-6">
-                 <div className="bg-slate-50/60 backdrop-blur-md p-3 rounded-2xl border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Maximize2 className="w-5 h-5 text-slate-900" />
+                 <div className="bg-slate-950/60 backdrop-blur-md p-3 rounded-2xl border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Maximize2 className="w-5 h-5 text-white" />
                  </div>
               </div>
             </motion.div>
@@ -137,26 +137,26 @@ export default function ProjectDetail() {
               {project.category}
             </span>
 
-            <div className="bg-white/50 border border-slate-200 rounded-[2rem] p-8 mb-8">
-              <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-600 mb-6 border-b border-slate-200 pb-4">Especificaciones Técnicas</h3>
+            <div className="bg-slate-900/50 border border-slate-800 rounded-[2rem] p-8 mb-8">
+              <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-400 mb-6 border-b border-slate-800 pb-4">Especificaciones Técnicas</h3>
               <div className="space-y-6">
                 {technicalData.map((item, idx) => (
                   <div key={idx} className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-slate-100 text-red-500 rounded-xl flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 bg-slate-800 text-red-500 rounded-xl flex items-center justify-center shrink-0">
                       {item.icon}
                     </div>
                     <div>
                       <div className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">{item.label}</div>
-                      <div className="text-sm font-bold text-slate-900">{item.value || "No especificado"}</div>
+                      <div className="text-sm font-bold text-slate-200">{item.value || "No especificado"}</div>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="bg-white/50 border border-slate-200 rounded-[2rem] p-8">
-              <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-600 mb-4">Descripción del Proyecto</h3>
-              <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">
+            <div className="bg-slate-900/50 border border-slate-800 rounded-[2rem] p-8">
+              <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Descripción del Proyecto</h3>
+              <p className="text-slate-400 text-sm leading-relaxed whitespace-pre-wrap">
                 {project.description}
               </p>
             </div>

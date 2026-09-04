@@ -35,11 +35,11 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-slate-950 flex items-center justify-center px-6">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-md bg-white border border-slate-200 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden"
+        className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden"
       >
         <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
         
@@ -63,8 +63,8 @@ export default function AdminLogin() {
             </motion.div>
           )}
 
-          <div className="p-6 bg-slate-50/50 border border-slate-200 rounded-2xl text-center">
-            <p className="text-slate-600 text-sm mb-6 leading-relaxed">
+          <div className="p-6 bg-slate-950/50 border border-slate-800 rounded-2xl text-center">
+            <p className="text-slate-400 text-sm mb-6 leading-relaxed">
               Para gestionar el portafolio, accede con tu cuenta autorizada.
             </p>
 

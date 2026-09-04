@@ -27,7 +27,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="py-20 bg-slate-50 border-t border-slate-300">
+    <footer className="py-20 bg-slate-950 border-t border-slate-900">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
           <div className="lg:col-span-1">
@@ -35,27 +35,27 @@ export default function Footer() {
               <img 
                 src="/VS_blanco.png" 
                 alt="Vertical Soluciones Logo" 
-                className="h-16 w-auto object-contain invert"
+                className="h-16 w-auto object-contain"
               />
             </div>
             <p className="text-slate-500 text-sm leading-relaxed mb-8">
               Especialistas en trabajos de alto riesgo y mantenimiento en altura con base en Viña del Mar y operaciones en todo Chile.
             </p>
             <div className="flex gap-4 justify-center md:justify-start">
-              <div className="w-10 h-10 border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:border-red-500 hover:text-red-500 transition-all cursor-pointer bg-white/50">
+              <div className="w-10 h-10 border border-slate-800 rounded-xl flex items-center justify-center text-slate-500 hover:border-red-500 hover:text-red-500 transition-all cursor-pointer bg-slate-900/50">
                 <Zap className="w-4 h-4" />
               </div>
-              <div className="w-10 h-10 border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:border-red-500 hover:text-red-500 transition-all cursor-pointer bg-white/50">
+              <div className="w-10 h-10 border border-slate-800 rounded-xl flex items-center justify-center text-slate-500 hover:border-red-500 hover:text-red-500 transition-all cursor-pointer bg-slate-900/50">
                 <Building className="w-4 h-4" />
               </div>
-              <div className="w-10 h-10 border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:border-red-500 hover:text-red-500 transition-all cursor-pointer bg-white/50">
+              <div className="w-10 h-10 border border-slate-800 rounded-xl flex items-center justify-center text-slate-500 hover:border-red-500 hover:text-red-500 transition-all cursor-pointer bg-slate-900/50">
                 <TowerControl className="w-4 h-4" />
               </div>
             </div>
           </div>
           
           <div>
-            <h4 className="font-bold uppercase tracking-widest text-xs text-slate-900 mb-8">Navegación</h4>
+            <h4 className="font-bold uppercase tracking-widest text-xs text-white mb-8">Navegación</h4>
             <ul className="space-y-4 text-sm text-slate-500 font-medium">
               <li><Link to="/portafolio" className="hover:text-red-500 transition-colors">Portafolio de Proyectos</Link></li>
               <li><a href="/#sobre-nosotros" className="hover:text-red-500 transition-colors">Nuestra Trayectoria</a></li>
@@ -65,7 +65,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-bold uppercase tracking-widest text-xs text-slate-900 mb-8">Contacto</h4>
+            <h4 className="font-bold uppercase tracking-widest text-xs text-white mb-8">Contacto</h4>
             <ul className="space-y-4 text-sm text-slate-500 font-medium">
               <li className="flex items-start gap-3">
                 <Phone className="w-4 h-4 text-red-500 mt-1" />
@@ -83,7 +83,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-bold uppercase tracking-widest text-xs text-slate-900 mb-8">Sistema</h4>
+            <h4 className="font-bold uppercase tracking-widest text-xs text-white mb-8">Sistema</h4>
             <ul className="space-y-4 text-sm text-slate-500 font-medium">
               <li>Términos del Servicio</li>
               <li>Política de Prevención</li>
@@ -94,7 +94,7 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="pt-10 border-t border-slate-300 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="pt-10 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[10px] text-slate-600 uppercase tracking-widest font-bold">
             © {new Date().getFullYear()} Vertical Soluciones SpA. Todos los derechos reservados.
           </p>
