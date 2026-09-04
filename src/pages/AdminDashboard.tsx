@@ -325,10 +325,10 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white font-sans flex font-medium">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex font-medium">
       {/* Sidebar */}
-      <aside className="w-64 border-r border-slate-800 bg-slate-900 hidden lg:flex flex-col">
-        <div className="p-8 border-b border-slate-800">
+      <aside className="w-64 border-r border-slate-200 bg-white hidden lg:flex flex-col">
+        <div className="p-8 border-b border-slate-200">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center font-black italic text-sm">V</div>
             <span className="font-black uppercase italic text-sm tracking-tighter">Vertical <span className="text-red-500">Panel</span></span>
@@ -338,38 +338,38 @@ export default function AdminDashboard() {
         <nav className="flex-1 p-6 space-y-2">
           <button 
             onClick={() => setActiveTab("projects")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "projects" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"}`}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "projects" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-slate-900"}`}
           >
             <LayoutDashboard className="w-4 h-4" />
             Portafolio
           </button>
           <button 
             onClick={() => setActiveTab("messages")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "messages" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"}`}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "messages" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-slate-900"}`}
           >
             <MessageSquare className="w-4 h-4" />
             Mensajes
           </button>
           <button 
             onClick={() => setActiveTab("settings")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "settings" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"}`}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "settings" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-slate-900"}`}
           >
             <SettingsIcon className="w-4 h-4" />
             Configuración
           </button>
           <button 
             onClick={() => setActiveTab("applications")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "applications" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"}`}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "applications" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-slate-900"}`}
           >
             <Briefcase className="w-4 h-4" />
             Postulaciones
           </button>
         </nav>
 
-        <div className="p-6 mt-auto border-t border-slate-800">
+        <div className="p-6 mt-auto border-t border-slate-200">
           <button 
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-white transition-colors text-sm font-bold uppercase tracking-widest"
+            className="w-full flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 transition-colors text-sm font-bold uppercase tracking-widest"
           >
             <LogOut className="w-4 h-4" />
             Cerrar Sesión
@@ -420,9 +420,9 @@ export default function AdminDashboard() {
                     layout
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-slate-900 border border-slate-800 rounded-[2rem] p-6 flex flex-col md:flex-row gap-6 relative group"
+                    className="bg-white border border-slate-200 rounded-[2rem] p-6 flex flex-col md:flex-row gap-6 relative group"
                   >
-                    <div className="w-full md:w-48 h-48 rounded-2xl overflow-hidden bg-slate-800 flex-shrink-0">
+                    <div className="w-full md:w-48 h-48 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0">
                       <img src={project.image} alt={project.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
                     </div>
                     
@@ -435,7 +435,7 @@ export default function AdminDashboard() {
                         <div className="flex gap-2">
                           <button 
                             onClick={() => openEditModal(project)}
-                            className="p-3 bg-slate-800 text-slate-400 rounded-xl hover:bg-slate-700 transition-colors hover:text-white"
+                            className="p-3 bg-slate-100 text-slate-600 rounded-xl hover:bg-slate-700 transition-colors hover:text-slate-900"
                           >
                             <Pencil className="w-4 h-4" />
                           </button>
@@ -457,7 +457,7 @@ export default function AdminDashboard() {
                         </div>
                       </div>
                       
-                      <p className="text-slate-400 text-sm leading-relaxed mb-4 line-clamp-2">{project.description}</p>
+                      <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-2">{project.description}</p>
                       
                       <div className="flex flex-wrap gap-4 mt-auto">
                         <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-slate-500">
@@ -469,7 +469,7 @@ export default function AdminDashboard() {
                   </motion.div>
                 ))}
                 {projects.length === 0 && (
-                  <div className="xl:col-span-2 bg-slate-900 border border-slate-800 border-dashed rounded-[3rem] p-20 text-center">
+                  <div className="xl:col-span-2 bg-white border border-slate-200 border-dashed rounded-[3rem] p-20 text-center">
                     <p className="text-slate-500 font-bold uppercase tracking-widest text-sm">No hay proyectos publicados todavía.</p>
                   </div>
                 )}
@@ -483,7 +483,7 @@ export default function AdminDashboard() {
                     key={message.id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="bg-slate-900 border border-slate-800 rounded-3xl p-8"
+                    className="bg-white border border-slate-200 rounded-3xl p-8"
                   >
                     <div className="flex flex-col md:flex-row justify-between gap-6 mb-6">
                       <div className="flex items-start gap-4">
@@ -509,13 +509,13 @@ export default function AdminDashboard() {
                         </button>
                       </div>
                     </div>
-                    <div className="bg-slate-950/50 border border-slate-800 rounded-2xl p-6 text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">
+                    <div className="bg-slate-50/50 border border-slate-200 rounded-2xl p-6 text-slate-700 text-sm leading-relaxed whitespace-pre-wrap">
                       {message.details}
                     </div>
                   </motion.div>
                 ))}
                 {messages.length === 0 && (
-                  <div className="bg-slate-900 border border-slate-800 border-dashed rounded-[3rem] p-20 text-center">
+                  <div className="bg-white border border-slate-200 border-dashed rounded-[3rem] p-20 text-center">
                     <p className="text-slate-500 font-bold uppercase tracking-widest text-sm">No hay mensajes recibidos.</p>
                   </div>
                 )}
@@ -526,7 +526,7 @@ export default function AdminDashboard() {
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="max-w-2xl bg-slate-900 border border-slate-800 rounded-[3rem] p-10"
+                className="max-w-2xl bg-white border border-slate-200 rounded-[3rem] p-10"
               >
                 <div className="mb-8">
                   <h2 className="text-xl font-black uppercase italic tracking-tighter mb-2">Información Global</h2>
@@ -543,7 +543,7 @@ export default function AdminDashboard() {
                         required
                         value={settings.phone}
                         onChange={(e) => setSettings({...settings, phone: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                         placeholder="+56 9 1234 5678"
                       />
                     </div>
@@ -558,7 +558,7 @@ export default function AdminDashboard() {
                         required
                         value={settings.email}
                         onChange={(e) => setSettings({...settings, email: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                         placeholder="contacto@empresa.cl"
                       />
                     </div>
@@ -573,13 +573,13 @@ export default function AdminDashboard() {
                         required
                         value={settings.address}
                         onChange={(e) => setSettings({...settings, address: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                         placeholder="Calle, Ciudad, Región"
                       />
                     </div>
                   </div>
 
-                  <div className="pt-8 mb-8 border-t border-slate-800">
+                  <div className="pt-8 mb-8 border-t border-slate-200">
                     <h2 className="text-xl font-black uppercase italic tracking-tighter mb-2">Textos del Hero (Inicio)</h2>
                     <p className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">Modifica los textos principales que aparecen en la cabecera de la página web.</p>
                   </div>
@@ -590,7 +590,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={settings.heroTagline}
                       onChange={(e) => setSettings({...settings, heroTagline: e.target.value})}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                       placeholder="Especialistas en inspecciones..."
                     />
                   </div>
@@ -602,7 +602,7 @@ export default function AdminDashboard() {
                         type="text"
                         value={settings.heroTitleLine1}
                         onChange={(e) => setSettings({...settings, heroTitleLine1: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                         placeholder="Respuesta inmediata"
                       />
                     </div>
@@ -613,7 +613,7 @@ export default function AdminDashboard() {
                         type="text"
                         value={settings.heroTitleLine2}
                         onChange={(e) => setSettings({...settings, heroTitleLine2: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                         placeholder="ante"
                       />
                     </div>
@@ -626,7 +626,7 @@ export default function AdminDashboard() {
                         type="text"
                         value={settings.heroTitleLine3}
                         onChange={(e) => setSettings({...settings, heroTitleLine3: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                         placeholder="emergencias y"
                       />
                     </div>
@@ -637,7 +637,7 @@ export default function AdminDashboard() {
                         type="text"
                         value={settings.heroTitleHighlight}
                         onChange={(e) => setSettings({...settings, heroTitleHighlight: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                         placeholder="contingencias climáticas"
                       />
                     </div>
@@ -649,7 +649,7 @@ export default function AdminDashboard() {
                       rows={4}
                       value={settings.heroDescription}
                       onChange={(e) => setSettings({...settings, heroDescription: e.target.value})}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white resize-none"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900 resize-none"
                       placeholder="Ante temporales y otras contingencias..."
                     />
                   </div>
@@ -668,7 +668,7 @@ export default function AdminDashboard() {
             {activeTab === "applications" && (
               <div className="space-y-6">
                 {applications.length === 0 ? (
-                  <div className="text-center py-20 bg-slate-900/50 border border-slate-800 rounded-3xl">
+                  <div className="text-center py-20 bg-white/50 border border-slate-200 rounded-3xl">
                     <Briefcase className="w-12 h-12 text-slate-700 mx-auto mb-4" />
                     <h3 className="text-xl font-bold mb-2">Sin Postulaciones</h3>
                     <p className="text-slate-500 text-sm">Aún no hay postulaciones recibidas.</p>
@@ -679,7 +679,7 @@ export default function AdminDashboard() {
                       key={app.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="bg-slate-900 border border-slate-800 rounded-3xl p-8 relative"
+                      className="bg-white border border-slate-200 rounded-3xl p-8 relative"
                     >
                       <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-6">
                         <div>
@@ -689,7 +689,7 @@ export default function AdminDashboard() {
                               Postulante
                             </span>
                           </div>
-                          <div className="flex flex-col sm:flex-row gap-4 text-slate-400 text-sm font-medium">
+                          <div className="flex flex-col sm:flex-row gap-4 text-slate-600 text-sm font-medium">
                             <div className="flex items-center gap-2"><Mail className="w-4 h-4" /> {app.email}</div>
                             <div className="flex items-center gap-2"><Phone className="w-4 h-4" /> {app.phone}</div>
                           </div>
@@ -702,12 +702,12 @@ export default function AdminDashboard() {
                         </div>
                       </div>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-slate-950 rounded-2xl mb-6 border border-slate-800">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-slate-50 rounded-2xl mb-6 border border-slate-200">
                         <div>
                           <h4 className="text-[10px] uppercase font-bold tracking-[0.2em] text-slate-500 mb-2 flex items-center gap-2">
                             <CheckCircle className="w-3 h-3 text-red-500" /> Experiencia Laboral
                           </h4>
-                          <p className="text-sm leading-relaxed whitespace-pre-wrap text-slate-300">
+                          <p className="text-sm leading-relaxed whitespace-pre-wrap text-slate-700">
                             {app.experience}
                           </p>
                         </div>
@@ -716,7 +716,7 @@ export default function AdminDashboard() {
                             <h4 className="text-[10px] uppercase font-bold tracking-[0.2em] text-slate-500 mb-2 flex items-center gap-2">
                               <CheckCircle className="w-3 h-3 text-red-500" /> Certificaciones
                             </h4>
-                            <p className="text-sm leading-relaxed whitespace-pre-wrap text-slate-300">
+                            <p className="text-sm leading-relaxed whitespace-pre-wrap text-slate-700">
                               {app.certifications || "No especificadas"}
                             </p>
                           </div>
@@ -755,18 +755,18 @@ export default function AdminDashboard() {
               animate={{ opacity: 1 }} 
               exit={{ opacity: 0 }}
               onClick={() => setIsModalOpen(false)}
-              className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm"
+              className="absolute inset-0 bg-slate-50/80 backdrop-blur-sm"
             />
             
             <motion.div 
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-[3rem] p-10 shadow-3xl overflow-y-auto max-h-[90vh]"
+              className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-[3rem] p-10 shadow-3xl overflow-y-auto max-h-[90vh]"
             >
               <button 
                 onClick={() => setIsModalOpen(false)}
-                className="absolute top-8 right-8 text-slate-500 hover:text-white transition-colors"
+                className="absolute top-8 right-8 text-slate-500 hover:text-slate-900 transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -787,7 +787,7 @@ export default function AdminDashboard() {
                         required
                         value={formData.title}
                         onChange={(e) => setFormData({...formData, title: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                         placeholder="Ej. Pintura de Fachada Edificio X"
                       />
                     </div>
@@ -802,7 +802,7 @@ export default function AdminDashboard() {
                         required
                         value={formData.category}
                         onChange={(e) => setFormData({...formData, category: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                         placeholder="Ej. Industrial"
                       />
                     </div>
@@ -812,7 +812,7 @@ export default function AdminDashboard() {
                     <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Imagen de Portada</label>
                     <div className="flex flex-col gap-4">
                       {formData.image && (
-                        <div className="relative w-full h-32 rounded-2xl overflow-hidden border border-slate-800">
+                        <div className="relative w-full h-32 rounded-2xl overflow-hidden border border-slate-200">
                           <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
                           <button 
                             type="button"
@@ -823,7 +823,7 @@ export default function AdminDashboard() {
                           </button>
                         </div>
                       )}
-                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-800 border-dashed rounded-[2rem] cursor-pointer hover:bg-slate-950 transition-colors">
+                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-200 border-dashed rounded-[2rem] cursor-pointer hover:bg-slate-50 transition-colors">
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                           <ImageIcon className="w-8 h-8 text-slate-500 mb-2" />
                           <p className="text-[10px] text-slate-500 uppercase font-black">Seleccionar Imagen</p>
@@ -842,7 +842,7 @@ export default function AdminDashboard() {
                         required
                         value={formData.client}
                         onChange={(e) => setFormData({...formData, client: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                         placeholder="Nombre del Mandante"
                       />
                     </div>
@@ -856,7 +856,7 @@ export default function AdminDashboard() {
                         type="text"
                         value={formData.serviceProvided}
                         onChange={(e) => setFormData({...formData, serviceProvided: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                         placeholder="Ej. Mantenimiento de Torres"
                       />
                     </div>
@@ -870,7 +870,7 @@ export default function AdminDashboard() {
                         type="text"
                         value={formData.contractedBy}
                         onChange={(e) => setFormData({...formData, contractedBy: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                         placeholder="Ej. Constructora XYZ"
                       />
                     </div>
@@ -884,7 +884,7 @@ export default function AdminDashboard() {
                         type="text"
                         value={formData.location}
                         onChange={(e) => setFormData({...formData, location: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                         placeholder="Ej. Viña del Mar, Chile"
                       />
                     </div>
@@ -898,7 +898,7 @@ export default function AdminDashboard() {
                         type="text"
                         value={formData.executionDate}
                         onChange={(e) => setFormData({...formData, executionDate: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900"
                         placeholder="Ej. Marzo 2024"
                       />
                     </div>
@@ -909,7 +909,7 @@ export default function AdminDashboard() {
                   <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Galería de Fotos</label>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
                     {formData.gallery.map((img, idx) => (
-                      <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden border border-slate-800">
+                      <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden border border-slate-200">
                         <img src={img} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
                         <button 
                           type="button"
@@ -920,7 +920,7 @@ export default function AdminDashboard() {
                         </button>
                       </div>
                     ))}
-                    <label className="flex flex-col items-center justify-center aspect-square border-2 border-slate-800 border-dashed rounded-2xl cursor-pointer hover:bg-slate-950 transition-colors">
+                    <label className="flex flex-col items-center justify-center aspect-square border-2 border-slate-200 border-dashed rounded-2xl cursor-pointer hover:bg-slate-50 transition-colors">
                       <Plus className="w-6 h-6 text-slate-500" />
                       <input type="file" className="hidden" accept="image/*" multiple onChange={handleGalleryUpload} />
                     </label>
@@ -933,7 +933,7 @@ export default function AdminDashboard() {
                     required
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-2xl p-6 text-sm focus:outline-none focus:border-red-500 transition-colors text-white min-h-[150px] resize-none"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-6 text-sm focus:outline-none focus:border-red-500 transition-colors text-slate-900 min-h-[150px] resize-none"
                     placeholder="Describe los detalles del proyecto..."
                   />
                 </div>

@@ -28,13 +28,13 @@ export default function Navbar() {
 
   return (
     <>
-      <nav id="navbar" className={`fixed w-full z-50 transition-all duration-300 ${scrolled || location.pathname !== "/" ? "bg-slate-950/90 backdrop-blur-md py-4 shadow-lg" : "bg-transparent py-6"}`}>
+      <nav id="navbar" className={`fixed w-full z-50 transition-all duration-300 ${scrolled || location.pathname !== "/" ? "bg-slate-50/90 backdrop-blur-md py-4 shadow-lg" : "bg-transparent py-6"}`}>
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-3">
             <img 
               src="/VS_blanco.png" 
               alt="Vertical Soluciones Logo" 
-              className="h-16 w-auto object-contain"
+              className="h-16 w-auto object-contain invert"
             />
           </Link>
 
@@ -57,7 +57,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Toggle */}
-          <button id="menu-toggle" className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button id="menu-toggle" className="md:hidden text-slate-900" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
@@ -70,7 +70,7 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-slate-900 pt-24 px-6 md:hidden"
+            className="fixed inset-0 z-40 bg-white pt-24 px-6 md:hidden"
           >
             <div className="flex flex-col gap-6 text-2xl font-bold uppercase italic">
               {navItems.map((item) => (

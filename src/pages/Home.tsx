@@ -185,7 +185,7 @@ export default function Home() {
     <>
       {/* Hero Section */}
       <header id="inicio" className="relative h-screen flex items-center overflow-hidden pt-20">
-        <div className="absolute inset-0 z-0 bg-slate-950">
+        <div className="absolute inset-0 z-0 bg-slate-50">
           <AnimatePresence>
             <motion.img 
               key={currentHeroImage}
@@ -199,7 +199,7 @@ export default function Home() {
               referrerPolicy="no-referrer"
             />
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-50 via-slate-50/60 to-transparent z-10" />
         </div>
         
         <div className="relative z-20 max-w-7xl mx-auto px-6 w-full">
@@ -214,12 +214,12 @@ export default function Home() {
                 {settings.heroTagline}
               </span>
             )}
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black italic uppercase leading-[1.05] mb-6 tracking-tighter text-white">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black italic uppercase leading-[1.05] mb-6 tracking-tighter text-slate-900">
               {settings.heroTitleLine1} {settings.heroTitleLine2 && <br className="hidden md:block" />}
               {settings.heroTitleLine2} {settings.heroTitleLine3 && <br className="hidden md:block" />}
               {settings.heroTitleLine3} <span className="text-red-500">{settings.heroTitleHighlight}</span>
             </h1>
-            <p className="text-sm md:text-base lg:text-lg text-slate-300 mb-10 max-w-3xl leading-relaxed whitespace-pre-wrap">
+            <p className="text-sm md:text-base lg:text-lg text-slate-700 mb-10 max-w-3xl leading-relaxed whitespace-pre-wrap">
               {settings.heroDescription}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -227,7 +227,7 @@ export default function Home() {
                 Solicitar Inspección
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </a>
-              <a href="#contacto" className="bg-white/5 border border-white/10 hover:bg-white/10 backdrop-blur-sm text-white px-10 py-5 rounded-full text-sm font-bold tracking-widest uppercase transition-all flex items-center justify-center gap-2 active:scale-95">
+              <a href="#contacto" className="bg-slate-900/5 border border-slate-900/10 hover:bg-slate-900/10 backdrop-blur-sm text-slate-900 px-10 py-5 rounded-full text-sm font-bold tracking-widest uppercase transition-all flex items-center justify-center gap-2 active:scale-95">
                 Contáctanos
               </a>
             </div>
@@ -241,7 +241,7 @@ export default function Home() {
                   className={`transition-all duration-500 rounded-full ${
                     idx === currentHeroImage 
                       ? "w-8 h-2 bg-red-500" 
-                      : "w-2 h-2 bg-white/30 hover:bg-white/50"
+                      : "w-2 h-2 bg-slate-900/30 hover:bg-slate-900/50"
                   }`}
                   aria-label={`Ir a la imagen ${idx + 1}`}
                 />
@@ -252,14 +252,14 @@ export default function Home() {
 
         <div className="absolute bottom-10 left-6 hidden xl:flex flex-col gap-4">
           <div className="flex items-center gap-4 text-[10px] tracking-[0.3em] font-bold uppercase text-slate-500">
-            <span className="w-12 h-[1px] bg-slate-800" />
+            <span className="w-12 h-[1px] bg-slate-100" />
             Viña del Mar · Chile
           </div>
         </div>
       </header>
 
       {/* Stats Bar */}
-      <section className="bg-slate-900/50 border-y border-slate-800 py-12 relative z-20">
+      <section className="bg-white/50 border-y border-slate-200 py-12 relative z-20">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
           {DIFFERENTIATORS.map((item, idx) => (
             <motion.div 
@@ -270,12 +270,12 @@ export default function Home() {
               viewport={{ once: true }}
               className="flex items-start gap-4"
             >
-              <div className="w-12 h-12 bg-slate-800 rounded-xl flex items-center justify-center text-red-500 flex-shrink-0">
+              <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-red-500 flex-shrink-0">
                 {item.icon}
               </div>
               <div>
                 <h3 className="font-bold text-sm uppercase tracking-wider mb-1">{item.title}</h3>
-                <p className="text-slate-400 text-xs leading-relaxed">{item.text}</p>
+                <p className="text-slate-600 text-xs leading-relaxed">{item.text}</p>
               </div>
             </motion.div>
           ))}
@@ -298,7 +298,7 @@ export default function Home() {
                   <img 
                     src="/background-worker.jpg" 
                     alt="Trabajo en Terreno" 
-                    className="w-full h-auto aspect-[3/4] object-cover rounded-[3rem] border-2 border-slate-800 shadow-2xl transition-all duration-700 group-hover:scale-[1.01] grayscale group-hover:grayscale-0 opacity-90 group-hover:opacity-100"
+                    className="w-full h-auto aspect-[3/4] object-cover rounded-[3rem] border-2 border-slate-200 shadow-2xl transition-all duration-700 group-hover:scale-[1.01] grayscale group-hover:grayscale-0 opacity-90 group-hover:opacity-100"
                   />
                 </div>
                 
@@ -314,9 +314,9 @@ export default function Home() {
                 </div>
                 
                 {/* Badge de experticia */}
-                <div className="absolute -bottom-6 -left-6 bg-slate-900 border border-slate-800 p-6 md:p-8 rounded-3xl shadow-2xl hidden md:block z-30">
+                <div className="absolute -bottom-6 -left-6 bg-white border border-slate-200 p-6 md:p-8 rounded-3xl shadow-2xl hidden md:block z-30">
                   <div className="text-4xl font-black text-red-500 mb-1 italic uppercase tracking-tighter">15+</div>
-                  <div className="text-xs font-bold uppercase tracking-widest text-slate-400">Años de Experticia</div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-slate-600">Años de Experticia</div>
                 </div>
               </div>
             </motion.div>
@@ -330,7 +330,7 @@ export default function Home() {
               <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter mb-8 bg-gradient-to-r from-white to-slate-500 bg-clip-text text-transparent">
                 Compromiso con la <br /> <span className="text-red-500">Excelencia Técnica</span>
               </h2>
-              <p className="text-slate-400 mb-8 leading-relaxed text-lg">
+              <p className="text-slate-600 mb-8 leading-relaxed text-lg">
                 Vertical Soluciones nace como respuesta a la creciente necesidad de servicios especializados en estructuras complejas, destacándonos como líderes en trabajos en altura Viña del Mar y la Región de Valparaíso. Utilizamos técnicos certificados IRATA/ANETVA, garantizando maniobras seguras y eficientes bajo los más altos protocolos de riesgo.
               </p>
               <ul className="space-y-4 mb-10">
@@ -356,7 +356,7 @@ export default function Home() {
       </section>
 
       {/* Services Grid */}
-      <section id="servicios" className="py-24 bg-slate-900/30">
+      <section id="servicios" className="py-24 bg-white/30">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-16">
             <div className="max-w-2xl">
@@ -384,7 +384,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.05 }}
                 viewport={{ once: true }}
-                className="group relative h-[400px] rounded-3xl overflow-hidden border border-slate-800 bg-slate-900"
+                className="group relative h-[400px] rounded-3xl overflow-hidden border border-slate-200 bg-white"
               >
                 <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-110">
                   <img 
@@ -394,14 +394,14 @@ export default function Home() {
                     referrerPolicy="no-referrer"
                   />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-50 via-slate-50/20 to-transparent" />
                 
                 <div className="absolute bottom-0 left-0 right-0 p-8">
                   <div className="text-red-500 mb-4 transition-transform duration-500 group-hover:-translate-y-2">
                     {service.icon}
                   </div>
                   <h3 className="text-xl font-black uppercase italic tracking-tighter mb-2">{service.title}</h3>
-                  <p className="text-slate-400 text-sm leading-snug opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0 text-balance">
+                  <p className="text-slate-600 text-sm leading-snug opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0 text-balance">
                     {service.description}
                   </p>
                 </div>
@@ -421,7 +421,7 @@ export default function Home() {
                 Proyectos <span className="text-red-500">Destacados</span>
               </h2>
             </div>
-            <Link to="/portafolio" className="bg-slate-900 border border-slate-800 hover:bg-slate-800 text-white px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all flex items-center gap-2 group active:scale-95">
+            <Link to="/portafolio" className="bg-white border border-slate-200 hover:bg-slate-100 text-slate-900 px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all flex items-center gap-2 group active:scale-95">
               Ver Todo el Portafolio
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
@@ -435,7 +435,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
                 viewport={{ once: true }}
-                className="group relative h-[500px] rounded-[2.5rem] overflow-hidden border border-slate-800 bg-slate-900"
+                className="group relative h-[500px] rounded-[2.5rem] overflow-hidden border border-slate-200 bg-white"
               >
                 <img 
                   src={project.image} 
@@ -443,14 +443,14 @@ export default function Home() {
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-40"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-50 via-slate-50/20 to-transparent" />
                 
                 <div className="absolute bottom-0 left-0 right-0 p-10">
                   <span className="px-3 py-1 bg-red-600 text-[10px] font-black uppercase tracking-widest rounded-full text-white mb-4 inline-block shadow-lg shadow-red-900/40">
                     {project.category}
                   </span>
                   <h3 className="text-2xl font-black italic uppercase tracking-tighter mb-2">{project.title}</h3>
-                  <div className="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase tracking-widest">
+                  <div className="flex items-center gap-2 text-slate-600 text-xs font-bold uppercase tracking-widest">
                     <MapPin className="w-3 h-3 text-red-500" />
                     {project.location || project.client}
                   </div>
@@ -476,7 +476,7 @@ export default function Home() {
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 items-center gap-16 text-white">
               <div>
                 <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter mb-8 leading-none">
-                  Seguridad <br /> Operacional <br /> <span className="opacity-60 text-slate-950">Sin Concesiones</span>
+                  Seguridad <br /> Operacional <br /> <span className="opacity-60 text-slate-50">Sin Concesiones</span>
                 </h2>
                 <p className="text-white/90 text-lg mb-10 max-w-lg font-medium leading-relaxed">
                   En trabajos verticales, el riesgo es nulo cuando la planificación es perfecta. Nuestros protocolos exceden las normativas vigentes en Chile.
@@ -499,7 +499,7 @@ export default function Home() {
                   { title: "Análisis de Riesgo", icon: <CheckCircle2 /> },
                   { title: "Capacitación Continua", icon: <HardHat /> }
                 ].map((item) => (
-                  <div key={item.title} className="bg-slate-950/20 backdrop-blur-sm border border-white/20 rounded-3xl p-8 flex flex-col items-center justify-center text-center gap-4 hover:bg-slate-950/30 transition-all">
+                  <div key={item.title} className="bg-slate-50/20 backdrop-blur-sm border border-white/20 rounded-3xl p-8 flex flex-col items-center justify-center text-center gap-4 hover:bg-slate-50/30 transition-all">
                     <div className="w-12 h-12 flex items-center justify-center bg-white/10 rounded-2xl">
                       {item.icon}
                     </div>
@@ -513,7 +513,7 @@ export default function Home() {
       </section>
 
       {/* Industries Slider */}
-      <section id="industrias" className="py-24 bg-slate-950">
+      <section id="industrias" className="py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-20">
             <span className="text-red-500 font-bold text-xs tracking-[0.4em] uppercase mb-4 block">Sectores de Operación</span>
@@ -533,9 +533,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ delay: idx * 0.05 }}
                 viewport={{ once: true }}
-                className="bg-slate-900/50 border border-slate-800 p-10 rounded-3xl flex flex-col items-center text-center gap-6 hover:bg-slate-900 transition-all hover:border-red-500/50 group"
+                className="bg-white/50 border border-slate-200 p-10 rounded-3xl flex flex-col items-center text-center gap-6 hover:bg-white transition-all hover:border-red-500/50 group"
               >
-                <div className="w-20 h-20 bg-slate-800 text-red-500 rounded-[2rem] flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+                <div className="w-20 h-20 bg-slate-100 text-red-500 rounded-[2rem] flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
                   {industry.icon}
                 </div>
                 <h3 className="text-lg font-bold uppercase tracking-widest">{industry.name}</h3>
@@ -549,7 +549,7 @@ export default function Home() {
       <section className="py-24 bg-red-600 border-y border-red-500 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-          <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter mb-6 text-white">
+          <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter mb-6 text-slate-900">
             Únete a nuestro equipo
           </h2>
           <p className="text-red-100 text-lg mb-10 max-w-2xl mx-auto font-medium">
@@ -557,7 +557,7 @@ export default function Home() {
           </p>
           <Link 
             to="/trabaja-con-nosotros"
-            className="inline-flex items-center gap-2 bg-slate-950 text-white px-10 py-5 rounded-full text-sm font-bold tracking-widest uppercase transition-all shadow-xl hover:bg-slate-900 group"
+            className="inline-flex items-center gap-2 bg-slate-50 text-slate-900 px-10 py-5 rounded-full text-sm font-bold tracking-widest uppercase transition-all shadow-xl hover:bg-white group"
           >
             Postula Aquí
             <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -566,14 +566,14 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contacto" className="py-24 bg-slate-900/20 border-t border-slate-800">
+      <section id="contacto" className="py-24 bg-white/20 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col lg:flex-row gap-20">
             <div className="lg:w-1/2">
               <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter mb-8 leading-none">
                 ¿Listo para su <br /> <span className="text-red-500">Próximo Desafío?</span>
               </h2>
-              <p className="text-slate-400 text-lg mb-12">
+              <p className="text-slate-600 text-lg mb-12">
                 Agende una visita técnica o solicite su presupuesto personalizado para arreglos de edificios, mantenimiento industrial o trabajos verticales en la V Región (Valparaíso, Viña del Mar) y todo Chile. Nuestro equipo de expertos está listo para asesorarlo.
               </p>
               
@@ -610,19 +610,19 @@ export default function Home() {
               </div>
 
               {/* Map Placeholder */}
-              <div className="mt-12 rounded-3xl overflow-hidden border border-slate-800 grayscale h-[300px] relative group">
+              <div className="mt-12 rounded-3xl overflow-hidden border border-slate-200 grayscale h-[300px] relative group">
                 <img 
                   src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=800" 
                   alt="Vina del Mar Map Placeholder" 
                   className="w-full h-full object-cover opacity-40"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-slate-950/60 transition-opacity group-hover:opacity-40">
+                <div className="absolute inset-0 flex items-center justify-center bg-slate-50/60 transition-opacity group-hover:opacity-40">
                   <div className="bg-red-600 p-4 rounded-2xl shadow-2xl">
-                    <MapPin className="text-white w-8 h-8" />
+                    <MapPin className="text-slate-900 w-8 h-8" />
                   </div>
                 </div>
-                <div className="absolute bottom-6 left-6 right-6 p-4 bg-slate-900/90 backdrop-blur border border-slate-800 rounded-2xl text-[10px] uppercase tracking-widest font-bold flex justify-between items-center">
+                <div className="absolute bottom-6 left-6 right-6 p-4 bg-white/90 backdrop-blur border border-slate-200 rounded-2xl text-[10px] uppercase tracking-widest font-bold flex justify-between items-center">
                   Ver en Google Maps
                   <ExternalLink className="w-3 h-3" />
                 </div>
@@ -630,7 +630,7 @@ export default function Home() {
             </div>
 
             <div className="lg:w-1/2">
-              <div className="bg-slate-900 p-8 md:p-12 rounded-[2rem] border border-slate-800 shadow-2xl shadow-slate-950">
+              <div className="bg-white p-8 md:p-12 rounded-[2rem] border border-slate-200 shadow-2xl shadow-slate-950">
                 {submitted ? (
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -641,7 +641,7 @@ export default function Home() {
                       <CheckCircle2 className="w-10 h-10" />
                     </div>
                     <h3 className="text-2xl font-black uppercase italic tracking-tighter mb-4">¡Mensaje Enviado!</h3>
-                    <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Nos pondremos en contacto a la brevedad.</p>
+                    <p className="text-slate-600 font-bold uppercase tracking-widest text-xs">Nos pondremos en contacto a la brevedad.</p>
                   </motion.div>
                 ) : (
                   <form onSubmit={handleContactSubmit} className="space-y-6">
@@ -653,7 +653,7 @@ export default function Home() {
                           required
                           value={formState.name}
                           onChange={(e) => setFormState({...formState, name: e.target.value})}
-                          className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors" 
+                          className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors" 
                           placeholder="Su nombre..." 
                         />
                       </div>
@@ -663,7 +663,7 @@ export default function Home() {
                           type="text" 
                           value={formState.company}
                           onChange={(e) => setFormState({...formState, company: e.target.value})}
-                          className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors" 
+                          className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors" 
                           placeholder="Nombre empresa..." 
                         />
                       </div>
@@ -675,7 +675,7 @@ export default function Home() {
                         required
                         value={formState.email}
                         onChange={(e) => setFormState({...formState, email: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors" 
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors" 
                         placeholder="email@ejemplo.cl" 
                       />
                     </div>
@@ -685,7 +685,7 @@ export default function Home() {
                         required
                         value={formState.service}
                         onChange={(e) => setFormState({...formState, service: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors appearance-none"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors appearance-none"
                       >
                         <option disabled>Seleccione un servicio...</option>
                         {SERVICES.map(s => <option key={s.title}>{s.title}</option>)}
@@ -698,7 +698,7 @@ export default function Home() {
                         required
                         value={formState.details}
                         onChange={(e) => setFormState({...formState, details: e.target.value})}
-                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors resize-none" 
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors resize-none" 
                         placeholder="Describa el trabajo a realizar..."
                       ></textarea>
                     </div>
