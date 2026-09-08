@@ -23,6 +23,7 @@ export default function Navbar() {
     { name: "Servicios", path: "/#servicios" },
     { name: "Sobre Nosotros", path: "/#sobre-nosotros" },
     { name: "Portafolio", path: "/portafolio" },
+    { name: "Foro", path: "/foro" },
     { name: "Seguridad", path: "/#seguridad" },
   ];
 

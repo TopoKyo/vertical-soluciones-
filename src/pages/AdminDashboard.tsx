@@ -78,8 +78,12 @@ interface JobApplicationData {
   createdAt: any;
 }
 
+import AdminForum from '../components/admin/AdminForum';
+import { Newspaper } from 'lucide-react';
+
+// Inside AdminDashboard component, add "forum" to activeTab state type and initialize tabs
 export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState<"projects" | "settings" | "messages" | "applications">("projects");
+  const [activeTab, setActiveTab] = useState<"projects" | "settings" | "messages" | "applications" | "forum">("projects");
   const [projects, setProjects] = useState<Project[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [applications, setApplications] = useState<JobApplicationData[]>([]);
@@ -101,7 +105,8 @@ export default function AdminDashboard() {
     heroTitleLine2: "",
     heroTitleLine3: "",
     heroTitleHighlight: "",
-    heroDescription: ""
+    heroDescription: "",
+    latestProjectId: ""
   });
   const [isSavingSettings, setIsSavingSettings] = useState(false);
 
@@ -180,6 +185,14 @@ export default function AdminDashboard() {
         if (docSnap.exists()) {
           setSettings(docSnap.data() as any);
         }
+        // Fetch projects for the dropdown
+        const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        const data = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as Project[];
+        setProjects(data);
       } else if (activeTab === "messages") {
         const q = query(collection(db, "messages"), orderBy("createdAt", "desc"), limit(50));
         const querySnapshot = await getDocs(q);
@@ -349,6 +362,13 @@ export default function AdminDashboard() {
           >
             <MessageSquare className="w-4 h-4" />
             Mensajes
+          </button>
+          <button 
+            onClick={() => setActiveTab("forum")}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "forum" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"}`}
+          >
+            <Newspaper className="w-4 h-4" />
+            Foro
           </button>
           <button 
             onClick={() => setActiveTab("settings")}
@@ -580,6 +600,32 @@ export default function AdminDashboard() {
                   </div>
 
                   <div className="pt-8 mb-8 border-t border-slate-800">
+                    <h2 className="text-xl font-black uppercase italic tracking-tighter mb-2">Último Proyecto (Home)</h2>
+                    <p className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">Selecciona el proyecto que aparecerá destacado como "Último Proyecto" en la página principal.</p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 ml-2">Proyecto Destacado</label>
+                    <div className="relative">
+                      <select
+                        value={settings.latestProjectId || ""}
+                        onChange={(e) => setSettings({...settings, latestProjectId: e.target.value})}
+                        className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-red-500 transition-colors text-white appearance-none"
+                      >
+                        <option value="">Ninguno (Ocultar sección)</option>
+                        {projects.map((project) => (
+                          <option key={project.id} value={project.id}>
+                            {project.title} - {project.client}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-6 text-slate-500">
+                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-8 mb-8 border-t border-slate-800">
                     <h2 className="text-xl font-black uppercase italic tracking-tighter mb-2">Textos del Hero (Inicio)</h2>
                     <p className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">Modifica los textos principales que aparecen en la cabecera de la página web.</p>
                   </div>
@@ -741,6 +787,10 @@ export default function AdminDashboard() {
                   ))
                 )}
               </div>
+            )}
+
+            {activeTab === "forum" && (
+              <AdminForum />
             )}
           </div>
         )}

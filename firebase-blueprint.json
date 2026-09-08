@@ -32,6 +32,7 @@
         "email": { "type": "string" },
         "address": { "type": "string" },
         "aiPrompt": { "type": "string", "description": "Knowledge base and personality for the AI Chatbot." },
+        "latestProjectId": { "type": "string", "description": "The ID of the project to display as Latest Project on the home page." },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["phone", "email", "address"]

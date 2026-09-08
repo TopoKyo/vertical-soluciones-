@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import { useEffect } from "react";
 import { doc, getDocFromServer } from 'firebase/firestore';
 import { db } from "./lib/firebase";
+import { HelmetProvider } from "react-helmet-async";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import FloatingActions from "./components/FloatingActions";
@@ -16,10 +17,11 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProjectDetail from "./pages/ProjectDetail";
 import JobApplication from "./pages/JobApplication";
+import ForumHome from "./pages/ForumHome";
+import ForumPost from "./pages/ForumPost";
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
-
   useEffect(() => {
     if (hash) {
       const element = document.getElementById(hash.substring(1));
@@ -30,7 +32,6 @@ function ScrollToTop() {
       window.scrollTo(0, 0);
     }
   }, [pathname, hash]);
-
   return null;
 }
 
@@ -49,23 +50,27 @@ export default function App() {
   }, []);
 
   return (
-    <Router>
-      <ScrollToTop />
-      <div className="min-h-screen bg-slate-950 text-slate-50 font-sans selection:bg-red-500 selection:text-white">
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/portafolio" element={<Portfolio />} />
-            <Route path="/portafolio/:id" element={<ProjectDetail />} />
-            <Route path="/trabaja-con-nosotros" element={<JobApplication />} />
-            <Route path="/admin" element={<AdminLogin />} />
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          </Routes>
-        </main>
-        <Footer />
-        <FloatingActions />
-      </div>
-    </Router>
+    <HelmetProvider>
+      <Router>
+        <ScrollToTop />
+        <div className="min-h-screen bg-slate-950 text-slate-50 font-sans selection:bg-red-500 selection:text-white">
+          <Navbar />
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/portafolio" element={<Portfolio />} />
+              <Route path="/portafolio/:id" element={<ProjectDetail />} />
+              <Route path="/trabaja-con-nosotros" element={<JobApplication />} />
+              <Route path="/foro" element={<ForumHome />} />
+              <Route path="/foro/post/:slug" element={<ForumPost />} />
+              <Route path="/admin" element={<AdminLogin />} />
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            </Routes>
+          </main>
+          <Footer />
+          <FloatingActions />
+        </div>
+      </Router>
+    </HelmetProvider>
   );
 }

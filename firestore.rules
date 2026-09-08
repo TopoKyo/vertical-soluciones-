@@ -49,6 +49,7 @@ service cloud.firestore {
              data.get('heroTitleLine3', '') is string && data.get('heroTitleLine3', '').size() <= 500 &&
              data.get('heroTitleHighlight', '') is string && data.get('heroTitleHighlight', '').size() <= 500 &&
              data.get('heroDescription', '') is string && data.get('heroDescription', '').size() <= 5000 &&
+             data.get('latestProjectId', '') is string && data.get('latestProjectId', '').size() <= 128 &&
              data.get('updatedAt', request.time) is timestamp;
     }
 
@@ -71,6 +72,37 @@ service cloud.firestore {
              data.createdAt is timestamp &&
              data.get('certifications', '') is string && data.get('certifications', '').size() <= 5000 &&
              data.get('portfolioUrl', '') is string && data.get('portfolioUrl', '').size() <= 500;
+    }
+
+    function isValidPost(data) {
+      return data.keys().hasAll(['title', 'slug', 'content', 'category', 'authorId', 'authorName', 'status', 'createdAt']) &&
+             data.title is string && data.title.size() <= 200 &&
+             data.slug is string && data.slug.size() <= 250 &&
+             data.content is string && data.content.size() <= 50000 &&
+             data.category is string && data.category.size() <= 100 &&
+             data.authorId is string && data.authorId.size() <= 128 &&
+             data.authorName is string && data.authorName.size() <= 200 &&
+             data.status is string && data.status in ['Publicada', 'Borrador', 'Oculta', 'Destacada'] &&
+             data.createdAt is timestamp &&
+             data.get('excerpt', '') is string && data.get('excerpt', '').size() <= 1000 &&
+             data.get('image', '') is string && data.get('image', '').size() <= 5000000 &&
+             data.get('tags', []) is list && data.get('tags', []).size() <= 20 &&
+             data.get('updatedAt', request.time) is timestamp &&
+             data.get('publishedAt', request.time) is timestamp &&
+             data.get('likes', 0) is number &&
+             data.get('commentsCount', 0) is number &&
+             data.get('featured', false) is bool;
+    }
+
+    function isValidComment(data) {
+      return data.keys().hasAll(['postId', 'content', 'authorName', 'createdAt']) &&
+             data.postId is string && data.postId.size() <= 128 &&
+             data.content is string && data.content.size() <= 5000 &&
+             data.authorName is string && data.authorName.size() <= 200 &&
+             data.createdAt is timestamp &&
+             data.get('authorId', '') is string && data.get('authorId', '').size() <= 128 &&
+             data.get('parentId', null) is string &&
+             data.get('likes', 0) is number;
     }
 
     // Default deny
@@ -104,6 +136,22 @@ service cloud.firestore {
     match /job_applications/{applicationId} {
       allow create: if isValidJobApplication(incoming());
       allow read, delete: if isAdmin();
+    }
+
+    match /posts/{postId} {
+      allow read: if existing().status in ['Publicada', 'Destacada'] || isAdmin();
+      allow create: if isAdmin() && isValidPost(incoming());
+      allow update: if isAdmin() && isValidPost(incoming()) || 
+                    (existing().status in ['Publicada', 'Destacada'] && incoming().diff(existing()).affectedKeys().hasOnly(['likes', 'commentsCount']));
+      allow delete: if isAdmin();
+    }
+
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if isValidComment(incoming());
+      allow update: if incoming().diff(existing()).affectedKeys().hasOnly(['likes']) || 
+                    (isSignedIn() && request.auth.uid == existing().authorId && incoming().diff(existing()).affectedKeys().hasOnly(['content', 'updatedAt']));
+      allow delete: if isAdmin() || (isSignedIn() && request.auth.uid == existing().authorId);
     }
   }
 }
