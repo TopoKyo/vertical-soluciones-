@@ -224,9 +224,9 @@ export default function ForumPost() {
             )}
           </header>
 
-          <div className="prose prose-invert prose-lg max-w-none mb-16 prose-headings:font-black prose-headings:italic prose-headings:uppercase prose-headings:tracking-tighter prose-a:text-red-500">
-            {post.content.split('\\n').map((paragraph, idx) => (
-              <p key={idx} className="text-slate-300 leading-relaxed">{paragraph}</p>
+          <div className="prose prose-invert prose-lg max-w-none mb-16 prose-headings:font-black prose-headings:italic prose-headings:uppercase prose-headings:tracking-tighter prose-a:text-red-500 whitespace-pre-wrap">
+            {post.content.split('\n').map((paragraph, idx) => (
+              <p key={idx} className="text-slate-300 leading-relaxed min-h-[1rem]">{paragraph}</p>
             ))}
           </div>
 

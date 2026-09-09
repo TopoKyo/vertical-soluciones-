@@ -139,7 +139,7 @@ service cloud.firestore {
     }
 
     match /posts/{postId} {
-      allow read: if existing().status in ['Publicada', 'Destacada'] || isAdmin();
+      allow read: if true;
       allow create: if isAdmin() && isValidPost(incoming());
       allow update: if isAdmin() && isValidPost(incoming()) || 
                     (existing().status in ['Publicada', 'Destacada'] && incoming().diff(existing()).affectedKeys().hasOnly(['likes', 'commentsCount']));
