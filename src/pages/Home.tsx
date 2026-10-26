@@ -27,7 +27,8 @@ import {
   MessageCircle,
   User,
   Heart,
-  Newspaper
+  Newspaper,
+  Download
 } from "lucide-react";
 
 import { db } from "../lib/firebase";
@@ -438,10 +439,17 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-              <button className="group flex items-center gap-2 text-red-500 font-bold uppercase text-sm tracking-widest hover:text-red-400 transition-colors">
+              <a 
+                href="/assets/aistudio/Portafolio_Vertical_Soluciones_2026_86a4a104.pdf"
+                download="Dossier_Corporativo_Vertical_Soluciones_2026.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 text-red-500 font-bold uppercase text-sm tracking-widest hover:text-red-400 transition-colors"
+              >
+                <Download className="w-4 h-4" />
                 Descargar Dossier Corporativo
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
+              </a>
             </motion.div>
           </div>
         </div>
@@ -578,10 +586,22 @@ export default function Home() {
                 Proyectos <span className="text-red-500">Destacados</span>
               </h2>
             </div>
-            <Link to="/portafolio" className="bg-slate-900 border border-slate-800 hover:bg-slate-800 text-white px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all flex items-center gap-2 group active:scale-95">
-              Ver Todo el Portafolio
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            <div className="flex flex-wrap items-center gap-4">
+              <a 
+                href="/assets/aistudio/Portafolio_Vertical_Soluciones_2026_86a4a104.pdf"
+                download="Dossier_Corporativo_Vertical_Soluciones_2026.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all flex items-center gap-2 group active:scale-95 shadow-lg shadow-red-900/20"
+              >
+                <Download className="w-4 h-4" />
+                Descargar Portafolio (PDF)
+              </a>
+              <Link to="/portafolio" className="bg-slate-900 border border-slate-800 hover:bg-slate-800 text-white px-8 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all flex items-center gap-2 group active:scale-95">
+                Ver Todo el Portafolio
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

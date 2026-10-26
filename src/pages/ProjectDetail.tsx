@@ -9,7 +9,8 @@ import {
   Briefcase, 
   ShieldCheck, 
   Loader2,
-  Maximize2
+  Maximize2,
+  Download
 } from "lucide-react";
 import { db } from "../lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
@@ -159,6 +160,23 @@ export default function ProjectDetail() {
               <p className="text-slate-400 text-sm leading-relaxed whitespace-pre-wrap">
                 {project.description}
               </p>
+            </div>
+
+            <div className="bg-slate-900/40 border border-slate-800/80 rounded-[2rem] p-8 mt-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+              <div>
+                <h4 className="text-sm font-black uppercase italic text-white mb-1">Dossier Corporativo 2026</h4>
+                <p className="text-xs text-slate-400">Descarga nuestro portafolio de servicios y casos de éxito en formato PDF.</p>
+              </div>
+              <a
+                href="/assets/aistudio/Portafolio_Vertical_Soluciones_2026_86a4a104.pdf"
+                download="Dossier_Corporativo_Vertical_Soluciones_2026.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3.5 rounded-full text-xs font-bold tracking-widest uppercase transition-all shadow-lg shadow-red-900/20 active:scale-95 shrink-0"
+              >
+                <Download className="w-4 h-4" />
+                Descargar Portafolio PDF
+              </a>
             </div>
           </div>
         </div>

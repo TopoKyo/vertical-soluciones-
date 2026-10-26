@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Mountain, Zap, Building, TowerControl, Mail, Phone, MapPin } from "lucide-react";
+import { Mountain, Zap, Building, TowerControl, Mail, Phone, MapPin, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import { db } from "../../lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
@@ -58,6 +58,18 @@ export default function Footer() {
             <h4 className="font-bold uppercase tracking-widest text-xs text-white mb-8">Navegación</h4>
             <ul className="space-y-4 text-sm text-slate-500 font-medium">
               <li><Link to="/portafolio" className="hover:text-red-500 transition-colors">Portafolio de Proyectos</Link></li>
+              <li>
+                <a 
+                  href="/assets/aistudio/Portafolio_Vertical_Soluciones_2026_86a4a104.pdf" 
+                  download="Dossier_Corporativo_Vertical_Soluciones_2026.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-red-500 transition-colors flex items-center gap-1.5 text-red-500/90 font-semibold"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  Descargar Dossier Corporativo
+                </a>
+              </li>
               <li><a href="/#sobre-nosotros" className="hover:text-red-500 transition-colors">Nuestra Trayectoria</a></li>
               <li><Link to="/portafolio" className="hover:text-red-500 transition-colors">Casos de Éxito</Link></li>
               <li><a href="/#seguridad" className="hover:text-red-500 transition-colors">Certificaciones y Seguridad</a></li>

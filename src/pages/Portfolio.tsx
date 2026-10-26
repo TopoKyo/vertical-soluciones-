@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
-import { Building2, Building, Mountain, Factory, TowerControl, ChevronRight, HardHat, Shield, CheckCircle2, Loader2 } from "lucide-react";
+import { Building2, Building, Mountain, Factory, TowerControl, ChevronRight, HardHat, Shield, CheckCircle2, Loader2, Download } from "lucide-react";
 import { db } from "../lib/firebase";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
@@ -30,14 +30,27 @@ export default function Portfolio() {
   return (
     <div className="pt-24 min-h-screen bg-slate-950 text-slate-50">
       <section className="py-20 border-b border-slate-900">
-        <div className="max-w-7xl mx-auto px-6 text-center md:text-left">
-          <span className="text-red-500 font-bold text-xs tracking-[0.4em] uppercase mb-4 block">Experiencia Comprobada</span>
-          <h1 className="text-5xl md:text-7xl font-black italic uppercase tracking-tighter mb-6 leading-none">
-            Nuestro <span className="text-red-500">Portafolio</span>
-          </h1>
-          <p className="text-slate-400 text-lg leading-relaxed max-w-2xl mx-auto md:mx-0">
-            Proyectos ejecutados bajo los más altos estándares industriales en todo Chile.
-          </p>
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row md:items-end justify-between gap-8 text-center md:text-left">
+          <div>
+            <span className="text-red-500 font-bold text-xs tracking-[0.4em] uppercase mb-4 block">Experiencia Comprobada</span>
+            <h1 className="text-5xl md:text-7xl font-black italic uppercase tracking-tighter mb-6 leading-none">
+              Nuestro <span className="text-red-500">Portafolio</span>
+            </h1>
+            <p className="text-slate-400 text-lg leading-relaxed max-w-2xl mx-auto md:mx-0">
+              Proyectos ejecutados bajo los más altos estándares industriales en todo Chile.
+            </p>
+          </div>
+          <a
+            href="/assets/aistudio/Portafolio_Vertical_Soluciones_2026_86a4a104.pdf"
+            download="Dossier_Corporativo_Vertical_Soluciones_2026.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-3 bg-red-600 hover:bg-red-700 text-white px-8 py-5 rounded-full text-xs font-bold tracking-widest uppercase transition-all shadow-xl shadow-red-900/30 group active:scale-95 shrink-0 self-center md:self-end"
+          >
+            <Download className="w-4 h-4" />
+            Descargar Dossier Corporativo (PDF)
+            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </a>
         </div>
       </section>
 
