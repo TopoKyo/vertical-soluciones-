@@ -13,7 +13,7 @@ import {
   Download
 } from "lucide-react";
 import { db } from "../lib/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { fetchProjectById } from "../lib/dataService";
 
 interface Project {
   id: string;
@@ -36,21 +36,21 @@ export default function ProjectDetail() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchProject() {
+    async function loadProject() {
       if (!id) return;
       try {
-        const docSnap = await getDoc(doc(db, "projects", id));
-        if (docSnap.exists()) {
-          setProject({ id: docSnap.id, ...docSnap.data() } as Project);
-          setSelectedImage((docSnap.data() as Project).image);
+        const proj = await fetchProjectById(id);
+        if (proj) {
+          setProject(proj);
+          setSelectedImage(proj.image);
         }
-      } catch (error) {
-        console.error("Error fetching project:", error);
+      } catch (err) {
+        console.warn("Using offline fallback project data:", err);
       } finally {
         setLoading(false);
       }
     }
-    fetchProject();
+    loadProject();
   }, [id]);
 
   if (loading) {

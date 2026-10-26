@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, query, orderBy, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import { Post } from '../../types/forum';
+import { DEFAULT_POSTS } from '../../data/defaultData';
 import slugify from 'slugify';
 import { Edit2, Trash2, PlusCircle, ExternalLink, Image as ImageIcon, Eye, EyeOff, Star, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -39,7 +40,8 @@ export default function AdminForum() {
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Post));
       setPosts(data);
     } catch (error) {
-      console.error("Error fetching posts:", error);
+      console.warn("Could not fetch remote posts for admin, using defaults:", error);
+      setPosts(DEFAULT_POSTS);
     } finally {
       setLoading(false);
     }

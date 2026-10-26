@@ -1,46 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { MessageCircle } from "lucide-react";
 import { motion } from "motion/react";
-import { db } from "../lib/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { fetchSettings } from "../lib/dataService";
 
 export default function FloatingActions() {
   const [phone, setPhone] = useState("+56953988893");
 
   useEffect(() => {
-    async function fetchPhone() {
-      try {
-        const docRef = doc(db, "settings", "contact");
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          if (data.phone) {
-            // Remove non-numeric characters for WhatsApp link
-            setPhone(data.phone.replace(/\D/g, ""));
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching phone for WhatsApp:", error);
+    fetchSettings().then(sett => {
+      if (sett.phone) {
+        setPhone(sett.phone.replace(/\D/g, ""));
       }
-    }
-    fetchPhone();
+    }).catch(() => {});
   }, []);
 
-  const handleWhatsApp = () => {
-    const cleanPhone = phone.startsWith("+") ? phone.substring(1) : phone;
-    window.open(`https://wa.me/${cleanPhone}`, "_blank");
-  };
+  const cleanPhone = phone.startsWith("+") ? phone.substring(1) : phone;
 
   return (
     <div className="fixed bottom-6 right-6 flex flex-col gap-4 z-50">
-      <motion.button
+      <motion.a
+        href={`https://wa.me/${cleanPhone}`}
+        target="_blank"
+        rel="noopener noreferrer"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        onClick={handleWhatsApp}
         className="w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-lg shadow-green-900/40 flex items-center justify-center transition-transform hover:scale-110 active:scale-95 group"
       >
         <MessageCircle className="w-6 h-6 group-hover:scale-110" />
-      </motion.button>
+      </motion.a>
     </div>
   );
 }

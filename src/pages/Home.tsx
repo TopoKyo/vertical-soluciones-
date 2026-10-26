@@ -32,8 +32,9 @@ import {
 } from "lucide-react";
 
 import { db } from "../lib/firebase";
-import { collection, addDoc, serverTimestamp, doc, getDoc, getDocs, query, orderBy, limit, where } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { Post } from "../types/forum";
+import { fetchSettings, fetchProjectsList, fetchProjectById, fetchPostsList, formatDate } from "../lib/dataService";
 
 const SERVICES = [
   {
@@ -145,37 +146,33 @@ export default function Home() {
   useEffect(() => {
     async function fetchSettingsAndProjects() {
       try {
-        const docRef = doc(db, "settings", "contact");
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setSettings(prev => ({
-            ...prev,
-            ...data
-          }));
-          if (data.latestProjectId) {
-            try {
-              const projectDoc = await getDoc(doc(db, "projects", data.latestProjectId));
-              if (projectDoc.exists()) {
-                setLatestProject({ id: projectDoc.id, ...projectDoc.data() });
-              }
-            } catch (err) {
-              console.error("Error fetching latest project:", err);
+        const sett = await fetchSettings();
+        setSettings(sett);
+
+        const projects = await fetchProjectsList();
+        setFeaturedProjects(projects.slice(0, 3));
+
+        const targetId = sett.latestProjectId;
+        if (targetId) {
+          const matched = projects.find(p => p.id === targetId);
+          if (matched) {
+            setLatestProject(matched);
+          } else {
+            const lProj = await fetchProjectById(targetId);
+            if (lProj) {
+              setLatestProject(lProj);
+            } else if (projects.length > 0) {
+              setLatestProject(projects[0]);
             }
           }
+        } else if (projects.length > 0) {
+          setLatestProject(projects[0]);
         }
-
-        const q = query(collection(db, "projects"), orderBy("createdAt", "desc"), limit(3));
-        const projectsSnap = await getDocs(q);
-        const projects = projectsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setFeaturedProjects(projects);
         
-        const postsQ = query(collection(db, "posts"), where("status", "in", ["Publicada", "Destacada"]), orderBy("createdAt", "desc"), limit(3));
-        const postsSnap = await getDocs(postsQ);
-        const fetchedPosts = postsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Post));
+        const fetchedPosts = await fetchPostsList(3);
         setLatestPosts(fetchedPosts);
       } catch (error) {
-        console.error("Error fetching settings or projects:", error);
+        console.warn("Using offline fallback data:", error);
       }
     }
     fetchSettingsAndProjects();
@@ -499,7 +496,7 @@ export default function Home() {
                 <div className="relative p-8 z-10">
                   <div className="flex flex-wrap items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-slate-300 mb-4">
                     <span className="px-3 py-1 bg-red-500/20 text-red-500 rounded-full border border-red-500/20">{post.category}</span>
-                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {new Date(post.createdAt.toDate()).toLocaleDateString('es-CL')}</span>
+                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {formatDate(post.createdAt)}</span>
                   </div>
                   
                   <h3 className="text-xl md:text-2xl font-black italic uppercase tracking-tighter mb-4 text-white line-clamp-2">

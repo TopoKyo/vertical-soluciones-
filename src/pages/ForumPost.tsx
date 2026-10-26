@@ -4,6 +4,7 @@ import { collection, query, where, getDocs, addDoc, serverTimestamp, orderBy, do
 import { db, auth } from '../lib/firebase';
 import { Helmet } from 'react-helmet-async';
 import { Post, Comment } from '../types/forum';
+import { fetchPostBySlug, formatDate } from '../lib/dataService';
 import { User, Clock, Heart, MessageCircle, Share2, ArrowLeft, Trash2 } from 'lucide-react';
 import { onAuthStateChanged } from 'firebase/auth';
 
@@ -36,14 +37,21 @@ export default function ForumPost() {
           setPost({ id: postDoc.id, ...postDoc.data() } as Post);
           
           // Fetch comments
-          const commentsRef = collection(db, 'comments');
-          const cq = query(commentsRef, where('postId', '==', postDoc.id), orderBy('createdAt', 'desc'));
-          const cSnap = await getDocs(cq);
-          const cData = cSnap.docs.map(d => ({ id: d.id, ...d.data() } as Comment));
-          setComments(cData);
+          try {
+            const commentsRef = collection(db, 'comments');
+            const cq = query(commentsRef, where('postId', '==', postDoc.id), orderBy('createdAt', 'desc'));
+            const cSnap = await getDocs(cq);
+            const cData = cSnap.docs.map(d => ({ id: d.id, ...d.data() } as Comment));
+            setComments(cData);
+          } catch {}
+        } else {
+          const fallback = await fetchPostBySlug(slug || '');
+          if (fallback) setPost(fallback);
         }
       } catch (error) {
-        console.error("Error fetching post:", error);
+        console.warn("Using fallback post:", error);
+        const fallback = await fetchPostBySlug(slug || '');
+        if (fallback) setPost(fallback);
       } finally {
         setLoading(false);
       }
@@ -136,7 +144,9 @@ export default function ForumPost() {
     </div>;
   }
 
-  const postDate = post.createdAt?.toDate ? post.createdAt.toDate() : new Date();
+  const postDate = typeof post.createdAt?.toDate === 'function'
+    ? post.createdAt.toDate() 
+    : (post.createdAt?.seconds ? new Date(post.createdAt.seconds * 1000) : (post.createdAt ? new Date(post.createdAt) : new Date()));
   
   // JSON-LD Schema for NewsArticle
   const schemaOrgJSONLD = {
@@ -144,8 +154,8 @@ export default function ForumPost() {
     "@type": "NewsArticle",
     "headline": post.title,
     "image": post.image ? [post.image] : [],
-    "datePublished": post.publishedAt?.toDate ? post.publishedAt.toDate().toISOString() : postDate.toISOString(),
-    "dateModified": post.updatedAt?.toDate ? post.updatedAt.toDate().toISOString() : postDate.toISOString(),
+    "datePublished": typeof post.publishedAt?.toDate === 'function' ? post.publishedAt.toDate().toISOString() : postDate.toISOString(),
+    "dateModified": typeof post.updatedAt?.toDate === 'function' ? post.updatedAt.toDate().toISOString() : postDate.toISOString(),
     "author": [{
         "@type": "Person",
         "name": post.authorName
@@ -274,7 +284,7 @@ export default function ForumPost() {
                       <div className="flex items-center gap-3">
                         <span className="text-sm font-bold uppercase tracking-widest text-white">{comment.authorName}</span>
                         <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                          {comment.createdAt?.toDate ? new Date(comment.createdAt.toDate()).toLocaleDateString('es-CL') : 'Justo ahora'}
+                          {formatDate(comment.createdAt)}
                         </span>
                       </div>
                       {(currentUser?.uid === comment.authorId || currentUser?.email === 'chinchuarchibo@gmail.com') && (

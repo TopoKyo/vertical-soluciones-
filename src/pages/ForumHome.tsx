@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
 import { Post } from '../types/forum';
+import { DEFAULT_POSTS } from '../data/defaultData';
+import { formatDate, getTimeMillis } from '../lib/dataService';
 import { Search, MessageCircle, Heart, Clock, User, ArrowRight } from 'lucide-react';
 
 const CATEGORIES = ["Noticias", "Comunidad", "Actualizaciones", "Avisos", "Eventos", "General"];
@@ -33,12 +35,14 @@ export default function ForumHome() {
         
         // Remove duplicates and sort by date
         const uniquePosts = Array.from(new Map(allPosts.map(p => [p.id, p])).values());
-        uniquePosts.sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis());
+        uniquePosts.sort((a, b) => getTimeMillis(b.createdAt) - getTimeMillis(a.createdAt));
 
         setFeaturedPosts(uniquePosts.filter(p => p.status === 'Destacada'));
         setPosts(uniquePosts);
       } catch (error) {
-        console.error("Error fetching posts:", error);
+        console.warn("Using offline forum posts:", error);
+        setFeaturedPosts(DEFAULT_POSTS.slice(0, 1));
+        setPosts(DEFAULT_POSTS);
       } finally {
         setLoading(false);
       }
@@ -158,7 +162,7 @@ export default function ForumHome() {
                         <div className="flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">
                           <span className="text-red-500">{post.category}</span>
                           <span>•</span>
-                          <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {new Date(post.createdAt.toDate()).toLocaleDateString('es-CL')}</span>
+                          <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {formatDate(post.createdAt)}</span>
                         </div>
                         <h3 className="text-2xl font-black uppercase italic tracking-tighter mb-4 leading-tight">
                           <Link to={`/foro/post/${post.slug}`} className="hover:text-red-500 transition-colors">

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Mountain, Zap, Building, TowerControl, Mail, Phone, MapPin, Download } from "lucide-react";
 import { Link } from "react-router-dom";
-import { db } from "../../lib/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { fetchSettings } from "../../lib/dataService";
 
 export default function Footer() {
   const [settings, setSettings] = useState({
@@ -12,18 +11,7 @@ export default function Footer() {
   });
 
   useEffect(() => {
-    async function fetchSettings() {
-      try {
-        const docRef = doc(db, "settings", "contact");
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setSettings(docSnap.data() as any);
-        }
-      } catch (error) {
-        console.error("Error fetching settings:", error);
-      }
-    }
-    fetchSettings();
+    fetchSettings().then(setSettings).catch(() => {});
   }, []);
 
   return (

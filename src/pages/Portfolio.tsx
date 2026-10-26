@@ -2,27 +2,24 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import { Building2, Building, Mountain, Factory, TowerControl, ChevronRight, HardHat, Shield, CheckCircle2, Loader2, Download } from "lucide-react";
-import { db } from "../lib/firebase";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { fetchProjectsList } from "../lib/dataService";
 
 export default function Portfolio() {
   const [dbProjects, setDbProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchProjects() {
+    async function loadProjects() {
       try {
-        const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
-        const snapshot = await getDocs(q);
-        const projects = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const projects = await fetchProjectsList();
         setDbProjects(projects);
       } catch (error) {
-        console.error("Error fetching projects:", error);
+        console.warn("Using offline portfolio projects:", error);
       } finally {
         setLoading(false);
       }
     }
-    fetchProjects();
+    loadProjects();
   }, []);
 
   const allProjects = [...dbProjects];

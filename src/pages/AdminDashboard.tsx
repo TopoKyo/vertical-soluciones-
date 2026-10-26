@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { 
   Plus, 
@@ -23,9 +23,14 @@ import {
   Calendar,
   Briefcase,
   Pencil,
-  Link as LinkIcon
+  Link as LinkIcon,
+  Menu,
+  Globe,
+  Star
 } from "lucide-react";
 import { db, auth } from "../lib/firebase";
+import { DEFAULT_PROJECTS, DEFAULT_SETTINGS } from "../data/defaultData";
+import { formatDateTime, saveProject, deleteProjectById, saveSettings, fetchProjectsList, fetchSettings } from "../lib/dataService";
 import { 
   collection, 
   addDoc, 
@@ -84,6 +89,7 @@ import { Newspaper } from 'lucide-react';
 // Inside AdminDashboard component, add "forum" to activeTab state type and initialize tabs
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<"projects" | "settings" | "messages" | "applications" | "forum">("projects");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [applications, setApplications] = useState<JobApplicationData[]>([]);
@@ -93,7 +99,16 @@ export default function AdminDashboard() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [isFeaturedInForm, setIsFeaturedInForm] = useState(false);
   const navigate = useNavigate();
+
+  const NAV_ITEMS = [
+    { id: "projects", label: "Portafolio", icon: LayoutDashboard, badge: projects.length },
+    { id: "messages", label: "Mensajes", icon: MessageSquare, badge: messages.length },
+    { id: "forum", label: "Foro", icon: Newspaper, badge: undefined },
+    { id: "settings", label: "Configuración", icon: SettingsIcon, badge: undefined },
+    { id: "applications", label: "Postulaciones", icon: Briefcase, badge: applications.length },
+  ] as const;
 
   // Settings state
   const [settings, setSettings] = useState({
@@ -124,31 +139,67 @@ export default function AdminDashboard() {
     executionDate: ""
   });
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve) => {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData(prev => ({ ...prev, image: reader.result as string }));
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const maxDim = 1200;
+          let w = img.width;
+          let h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL("image/jpeg", 0.8));
+          } else {
+            resolve(e.target?.result as string);
+          }
+        };
+        img.onerror = () => resolve(e.target?.result as string);
+        img.src = e.target?.result as string;
       };
       reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        const compressed = await compressImage(file);
+        setFormData(prev => ({ ...prev, image: compressed }));
+      } catch (err) {
+        console.error("Error reading image:", err);
+      }
     }
   };
 
-  const handleGalleryUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
       const fileArray = Array.from(files) as File[];
-      fileArray.forEach(file => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
+      for (const file of fileArray) {
+        try {
+          const compressed = await compressImage(file);
           setFormData(prev => ({ 
             ...prev, 
-            gallery: [...prev.gallery, reader.result as string] 
+            gallery: [...prev.gallery, compressed] 
           }));
-        };
-        reader.readAsDataURL(file);
-      });
+        } catch {}
+      }
     }
   };
 
@@ -172,46 +223,48 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       if (activeTab === "projects") {
-        const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
-        const data = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Project[];
-        setProjects(data);
+        const data = await fetchProjectsList();
+        setProjects(data as Project[]);
+        const sett = await fetchSettings();
+        setSettings(sett);
       } else if (activeTab === "settings") {
-        const docRef = doc(db, "settings", "contact");
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setSettings(docSnap.data() as any);
-        }
-        // Fetch projects for the dropdown
-        const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
-        const data = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Project[];
-        setProjects(data);
+        const sett = await fetchSettings();
+        setSettings(sett);
+        const data = await fetchProjectsList();
+        setProjects(data as Project[]);
       } else if (activeTab === "messages") {
-        const q = query(collection(db, "messages"), orderBy("createdAt", "desc"), limit(50));
-        const querySnapshot = await getDocs(q);
-        const data = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Message[];
-        setMessages(data);
+        try {
+          const q = query(collection(db, "messages"), orderBy("createdAt", "desc"), limit(50));
+          const querySnapshot = await getDocs(q);
+          const data = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          })) as Message[];
+          setMessages(data);
+        } catch {
+          setMessages([]);
+        }
       } else if (activeTab === "applications") {
-        const q = query(collection(db, "job_applications"), orderBy("createdAt", "desc"), limit(50));
-        const querySnapshot = await getDocs(q);
-        const data = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as JobApplicationData[];
-        setApplications(data);
+        try {
+          const q = query(collection(db, "job_applications"), orderBy("createdAt", "desc"), limit(50));
+          const querySnapshot = await getDocs(q);
+          const data = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          })) as JobApplicationData[];
+          setApplications(data);
+        } catch {
+          setApplications([]);
+        }
       }
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    } catch (error: any) {
+      console.warn("Could not fetch remote data for dashboard, using local defaults:", error?.message || error);
+      if (activeTab === "projects" && projects.length === 0) {
+        setProjects(DEFAULT_PROJECTS as any);
+      } else if (activeTab === "settings" && !settings.phone) {
+        setSettings(DEFAULT_SETTINGS);
+        setProjects(DEFAULT_PROJECTS as any);
+      }
     } finally {
       setLoading(false);
     }
@@ -223,10 +276,21 @@ export default function AdminDashboard() {
     navigate("/admin");
   };
 
+  const handleSetFeatured = async (id: string) => {
+    try {
+      const updated = { ...settings, latestProjectId: id };
+      setSettings(updated);
+      await saveSettings(updated);
+      alert("¡Proyecto fijado como Destacado en Inicio exitosamente!");
+    } catch (err) {
+      console.error("Error setting featured project:", err);
+    }
+  };
+
   const handleDeleteProject = async (id: string) => {
     try {
-      await deleteDoc(doc(db, "projects", id));
-      setProjects(projects.filter(p => p.id !== id));
+      await deleteProjectById(id);
+      setProjects(prev => prev.filter(p => p.id !== id));
       setDeleteConfirmId(null);
     } catch (error) {
       console.error("Error al eliminar el proyecto:", error);
@@ -248,10 +312,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     setIsSavingSettings(true);
     try {
-      await setDoc(doc(db, "settings", "contact"), {
-        ...settings,
-        updatedAt: serverTimestamp()
-      });
+      await saveSettings(settings);
       alert("Configuración guardada correctamente.");
     } catch (error) {
       alert("Error al guardar la configuración.");
@@ -264,18 +325,22 @@ export default function AdminDashboard() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const projectData = {
+      const saved = await saveProject({
         ...formData,
-        updatedAt: serverTimestamp()
-      };
-      
+        id: (isEditing && editingId) ? editingId : undefined
+      });
+
       if (isEditing && editingId) {
-        await setDoc(doc(db, "projects", editingId), projectData, { merge: true });
+        setProjects(prev => prev.map(p => p.id === editingId ? { ...p, ...saved } as Project : p));
       } else {
-        await addDoc(collection(db, "projects"), {
-          ...projectData,
-          createdAt: serverTimestamp()
-        });
+        setProjects(prev => [saved as Project, ...prev]);
+      }
+
+      if (isFeaturedInForm) {
+        const targetId = (isEditing && editingId) ? editingId : saved.id;
+        const updated = { ...settings, latestProjectId: targetId };
+        setSettings(updated);
+        await saveSettings(updated);
       }
 
       setIsModalOpen(false);
@@ -293,8 +358,8 @@ export default function AdminDashboard() {
         location: "",
         executionDate: ""
       });
-      fetchData();
     } catch (error) {
+      console.error("Error al guardar el proyecto:", error);
       alert("Error al guardar el proyecto.");
     } finally {
       setIsSubmitting(false);
@@ -315,6 +380,7 @@ export default function AdminDashboard() {
       executionDate: project.executionDate || ""
     });
     setEditingId(project.id);
+    setIsFeaturedInForm(settings.latestProjectId === project.id);
     setIsEditing(true);
     setIsModalOpen(true);
   };
@@ -332,15 +398,188 @@ export default function AdminDashboard() {
       location: "",
       executionDate: ""
     });
+    setIsFeaturedInForm(false);
     setIsEditing(false);
     setEditingId(null);
     setIsModalOpen(true);
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white font-sans flex font-medium">
-      {/* Sidebar */}
-      <aside className="w-64 border-r border-slate-800 bg-slate-900 hidden lg:flex flex-col">
+    <div className="min-h-screen bg-slate-950 text-white font-sans flex flex-col lg:flex-row font-medium">
+      {/* Mobile Top Bar (visible on screens < lg) */}
+      <div className="lg:hidden sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex items-center justify-between shadow-lg">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center font-black italic text-sm shadow-md shadow-red-900/30">V</div>
+          <div>
+            <div className="font-black uppercase italic text-xs tracking-tighter leading-tight">
+              Vertical <span className="text-red-500">Panel</span>
+            </div>
+            <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none mt-0.5">
+              {activeTab === "projects" && "Portafolio"}
+              {activeTab === "messages" && "Mensajes"}
+              {activeTab === "forum" && "Foro"}
+              {activeTab === "settings" && "Configuración"}
+              {activeTab === "applications" && "Postulaciones"}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {activeTab === "projects" && (
+            <button
+              onClick={openAddModal}
+              className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1 active:scale-95 transition-all shadow-md shadow-red-900/20"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Nuevo</span>
+            </button>
+          )}
+
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Abrir menú"
+            className="p-2 text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors active:scale-95 border border-slate-700/60"
+          >
+            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Quick Horizontal Scrollable Tabs (< lg) */}
+      <div className="lg:hidden sticky top-[57px] z-30 bg-slate-950/95 backdrop-blur-md border-b border-slate-800/80 px-3 py-2 flex items-center gap-2 overflow-x-auto shadow-inner">
+        {NAV_ITEMS.map((item) => {
+          const Icon = item.icon;
+          const isActive = activeTab === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => {
+                setActiveTab(item.id);
+                setIsMobileMenuOpen(false);
+              }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all active:scale-95 shrink-0 ${
+                isActive
+                  ? "bg-red-600 text-white shadow-md shadow-red-900/30"
+                  : "bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800"
+              }`}
+            >
+              <Icon className="w-3.5 h-3.5" />
+              <span>{item.label}</span>
+              {typeof item.badge === "number" && item.badge > 0 && (
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
+                  isActive ? "bg-white/20 text-white" : "bg-slate-800 text-slate-400"
+                }`}>
+                  {item.badge}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Mobile Drawer Slide-over Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <div className="lg:hidden fixed inset-0 z-50 flex">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"
+            />
+
+            {/* Drawer Content */}
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 250 }}
+              className="relative w-4/5 max-w-xs bg-slate-900 border-r border-slate-800 p-6 flex flex-col h-full shadow-2xl z-10"
+            >
+              <div className="flex items-center justify-between pb-6 border-b border-slate-800">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center font-black italic text-sm">V</div>
+                  <span className="font-black uppercase italic text-sm tracking-tighter">
+                    Vertical <span className="text-red-500">Panel</span>
+                  </span>
+                </div>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-1.5 text-slate-400 hover:text-white bg-slate-800 rounded-lg"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="text-[10px] uppercase font-bold tracking-widest text-slate-500 mt-6 mb-2 px-2">
+                Navegación
+              </div>
+
+              <nav className="space-y-1.5 flex-1 overflow-y-auto">
+                {NAV_ITEMS.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = activeTab === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        setActiveTab(item.id);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
+                        isActive
+                          ? "bg-red-600 text-white shadow-lg shadow-red-900/30"
+                          : "text-slate-400 hover:text-white hover:bg-slate-800"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon className="w-4 h-4" />
+                        <span>{item.label}</span>
+                      </div>
+                      {typeof item.badge === "number" && item.badge > 0 && (
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ${
+                          isActive ? "bg-white/20 text-white" : "bg-slate-800 text-slate-400"
+                        }`}>
+                          {item.badge}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+
+                <div className="pt-4 mt-4 border-t border-slate-800">
+                  <Link
+                    to="/"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                  >
+                    <Globe className="w-4 h-4 text-slate-500" />
+                    <span>Ver Sitio Web</span>
+                  </Link>
+                </div>
+              </nav>
+
+              <div className="pt-4 border-t border-slate-800">
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    handleLogout();
+                  }}
+                  className="w-full flex items-center gap-3 px-3.5 py-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-colors text-xs font-bold uppercase tracking-wider"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Cerrar Sesión</span>
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop Sidebar (lg:flex) */}
+      <aside className="w-64 border-r border-slate-800 bg-slate-900 hidden lg:flex flex-col shrink-0 sticky top-0 h-screen">
         <div className="p-8 border-b border-slate-800">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center font-black italic text-sm">V</div>
@@ -348,42 +587,40 @@ export default function AdminDashboard() {
           </div>
         </div>
         
-        <nav className="flex-1 p-6 space-y-2">
-          <button 
-            onClick={() => setActiveTab("projects")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "projects" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"}`}
-          >
-            <LayoutDashboard className="w-4 h-4" />
-            Portafolio
-          </button>
-          <button 
-            onClick={() => setActiveTab("messages")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "messages" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"}`}
-          >
-            <MessageSquare className="w-4 h-4" />
-            Mensajes
-          </button>
-          <button 
-            onClick={() => setActiveTab("forum")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "forum" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"}`}
-          >
-            <Newspaper className="w-4 h-4" />
-            Foro
-          </button>
-          <button 
-            onClick={() => setActiveTab("settings")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "settings" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"}`}
-          >
-            <SettingsIcon className="w-4 h-4" />
-            Configuración
-          </button>
-          <button 
-            onClick={() => setActiveTab("applications")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${activeTab === "applications" ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"}`}
-          >
-            <Briefcase className="w-4 h-4" />
-            Postulaciones
-          </button>
+        <nav className="flex-1 p-6 space-y-2 overflow-y-auto">
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${
+                  isActive ? "bg-red-600/10 text-red-500" : "text-slate-500 hover:text-white"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <Icon className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </div>
+                {typeof item.badge === "number" && item.badge > 0 && (
+                  <span className="text-[10px] px-2 py-0.5 rounded-full font-black bg-slate-800 text-slate-400">
+                    {item.badge}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+
+          <div className="pt-4 border-t border-slate-800/60 mt-4">
+            <Link
+              to="/"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-white transition-colors"
+            >
+              <Globe className="w-4 h-4" />
+              <span>Ver Sitio Web</span>
+            </Link>
+          </div>
         </nav>
 
         <div className="p-6 mt-auto border-t border-slate-800">
@@ -398,18 +635,20 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-8 lg:p-12 overflow-y-auto">
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+      <main className="flex-1 px-4 py-6 md:p-8 lg:p-12 overflow-y-auto min-w-0">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8 md:mb-12">
           <div>
-            <h1 className="text-3xl font-black uppercase italic tracking-tighter mb-2">
+            <h1 className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter mb-2">
               {activeTab === "projects" && <>Gestión de <span className="text-red-500">Portafolio</span></>}
               {activeTab === "messages" && <>Bandeja de <span className="text-red-500">Mensajes</span></>}
+              {activeTab === "forum" && <>Administración del <span className="text-red-500">Foro</span></>}
               {activeTab === "settings" && <>Ajustes de <span className="text-red-500">Contacto</span></>}
               {activeTab === "applications" && <>Bolsa de <span className="text-red-500">Trabajo</span></>}
             </h1>
-            <p className="text-slate-500 text-sm font-bold uppercase tracking-widest">
-              {activeTab === "projects" && "Añade o elimina proyectos realizados por la empresa."}
+            <p className="text-slate-500 text-xs md:text-sm font-bold uppercase tracking-widest">
+              {activeTab === "projects" && "Añade o edita los proyectos realizados por la empresa."}
               {activeTab === "messages" && "Mensajes recibidos a través del formulario de contacto."}
+              {activeTab === "forum" && "Crea y gestiona artículos y publicaciones del foro."}
               {activeTab === "settings" && "Actualiza la información de contacto global del sitio."}
               {activeTab === "applications" && "Revisa las postulaciones de técnicos y profesionales."}
             </p>
@@ -418,7 +657,7 @@ export default function AdminDashboard() {
           {activeTab === "projects" && (
             <button 
               onClick={openAddModal}
-              className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-4 rounded-2xl font-black uppercase tracking-widest italic text-sm transition-all hover:scale-105 shadow-xl shadow-red-900/20"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-4 rounded-2xl font-black uppercase tracking-widest italic text-sm transition-all hover:scale-105 active:scale-95 shadow-xl shadow-red-900/20"
             >
               <PlusCircle className="w-5 h-5" />
               Nuevo Proyecto
@@ -452,24 +691,44 @@ export default function AdminDashboard() {
                           <span className="text-[10px] uppercase tracking-[0.2em] font-black text-red-500 mb-2 block">{project.category}</span>
                           <h3 className="text-xl font-black uppercase italic tracking-tighter">{project.title}</h3>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
+                          {settings.latestProjectId === project.id ? (
+                            <span 
+                              title="Proyecto destacado actual en la página principal"
+                              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-black uppercase tracking-wider shadow-md shadow-amber-500/10"
+                            >
+                              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                              <span>Destacado</span>
+                            </span>
+                          ) : (
+                            <button 
+                              onClick={() => handleSetFeatured(project.id)}
+                              title="Marcar como proyecto destacado en Inicio"
+                              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 text-slate-400 hover:text-amber-400 hover:bg-slate-700 transition-all text-[10px] font-bold uppercase tracking-wider border border-slate-700/60"
+                            >
+                              <Star className="w-3.5 h-3.5" />
+                              <span>Destacar</span>
+                            </button>
+                          )}
                           <button 
                             onClick={() => openEditModal(project)}
-                            className="p-3 bg-slate-800 text-slate-400 rounded-xl hover:bg-slate-700 transition-colors hover:text-white"
+                            title="Editar proyecto"
+                            className="p-2.5 bg-slate-800 text-slate-400 rounded-xl hover:bg-slate-700 transition-colors hover:text-white border border-slate-700/60"
                           >
                             <Pencil className="w-4 h-4" />
                           </button>
                           {deleteConfirmId === project.id ? (
                             <button 
                               onClick={() => handleDeleteProject(project.id)}
-                              className="p-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors font-bold text-xs"
+                              className="px-3 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors font-bold text-xs"
                             >
                               Seguro?
                             </button>
                           ) : (
                             <button 
                               onClick={() => setDeleteConfirmId(project.id)}
-                              className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 transition-colors hover:text-white"
+                              title="Eliminar proyecto"
+                              className="p-2.5 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 transition-colors hover:text-white border border-red-500/20"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -515,7 +774,7 @@ export default function AdminDashboard() {
                           <div className="flex flex-wrap gap-x-6 gap-y-2 text-[10px] uppercase tracking-widest font-black text-slate-500">
                             <span className="flex items-center gap-2"><Mail className="w-3 h-3" /> {message.email}</span>
                             {message.company && <span className="flex items-center gap-2"><Briefcase className="w-3 h-3" /> {message.company}</span>}
-                            <span className="flex items-center gap-2"><Calendar className="w-3 h-3" /> {message.createdAt?.toDate().toLocaleString() || "Recién enviado"}</span>
+                            <span className="flex items-center gap-2"><Calendar className="w-3 h-3" /> {formatDateTime(message.createdAt)}</span>
                           </div>
                         </div>
                       </div>
@@ -742,9 +1001,7 @@ export default function AdminDashboard() {
                         </div>
                         <div className="text-right">
                           <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Recibido</div>
-                          <div className="text-sm font-medium">{app.createdAt?.toDate().toLocaleDateString('es-CL', {
-                            day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
-                          })}</div>
+                          <div className="text-sm font-medium">{formatDateTime(app.createdAt)}</div>
                         </div>
                       </div>
                       
@@ -799,7 +1056,7 @@ export default function AdminDashboard() {
       {/* Modal Form */}
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 sm:p-12">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-12">
             <motion.div 
               initial={{ opacity: 0 }} 
               animate={{ opacity: 1 }} 
@@ -812,13 +1069,13 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-[3rem] p-10 shadow-3xl overflow-y-auto max-h-[90vh]"
+              className="relative w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-3xl sm:rounded-[3rem] p-5 sm:p-10 shadow-3xl overflow-y-auto max-h-[90vh]"
             >
               <button 
                 onClick={() => setIsModalOpen(false)}
-                className="absolute top-8 right-8 text-slate-500 hover:text-white transition-colors"
+                className="absolute top-5 right-5 sm:top-8 sm:right-8 text-slate-400 hover:text-white transition-colors p-2 bg-slate-800/60 rounded-xl"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5" />
               </button>
 
               <div className="mb-10">
@@ -986,6 +1243,27 @@ export default function AdminDashboard() {
                     className="w-full bg-slate-950 border border-slate-800 rounded-2xl p-6 text-sm focus:outline-none focus:border-red-500 transition-colors text-white min-h-[150px] resize-none"
                     placeholder="Describe los detalles del proyecto..."
                   />
+                </div>
+
+                <div 
+                  onClick={() => setIsFeaturedInForm(!isFeaturedInForm)}
+                  className={`flex items-center gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
+                    isFeaturedInForm 
+                      ? "bg-amber-500/10 border-amber-500/40 text-amber-300" 
+                      : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    id="featured-checkbox"
+                    checked={isFeaturedInForm}
+                    onChange={(e) => setIsFeaturedInForm(e.target.checked)}
+                    className="w-5 h-5 accent-red-600 rounded cursor-pointer"
+                  />
+                  <label htmlFor="featured-checkbox" className="cursor-pointer text-xs font-bold flex items-center gap-2 select-none">
+                    <Star className={`w-4 h-4 ${isFeaturedInForm ? "fill-amber-400 text-amber-400" : "text-slate-500"}`} />
+                    <span>Fijar como Proyecto Destacado en Inicio (Sección "Último Proyecto")</span>
+                  </label>
                 </div>
 
                 <button

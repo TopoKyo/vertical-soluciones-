@@ -4,6 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="4ZEBNoqAoIeeXTVjlBxRNqXEdU-eQtQ-E6tuBAUmn1o" />
+    <script>
+      // Ignore WebSocket / HMR connection errors in preview iframe environment
+      window.addEventListener('unhandledrejection', function(event) {
+        if (event.reason && (
+          event.reason.message?.includes('WebSocket') || 
+          event.reason.message?.includes('closed without opened') ||
+          (typeof event.reason === 'string' && event.reason.includes('WebSocket')) ||
+          event.reason.stack?.includes('@vite/client')
+        )) {
+          event.preventDefault();
+        }
+      });
+      window.addEventListener('error', function(event) {
+        if (event.filename && event.filename.includes('@vite/client')) {
+          event.preventDefault();
+        }
+      });
+    </script>
     
     <!-- Primary Meta Tags -->
     <title>Vertical Soluciones | Trabajos en Altura Viña del Mar y Valparaíso</title>
